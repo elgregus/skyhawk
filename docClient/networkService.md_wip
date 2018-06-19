@@ -1,0 +1,85 @@
+Network Service
+============
+
+The Network service is used to interact with the network manager.
+
+This implementation does not handles errors. See [services](services.md) to learn how to implement error handling in this wrapper.
+
+### Instantiation
+
+~~~~{.java}
+String host = "localhost";
+int port = 50051;
+
+final MannagedChannel channel = ManagedChannelBuilder.forAddress(host, port).usePlaintext(true).build();
+final BLink_Network networkService =  = new BLink_Network(channel);
+~~~~
+
+---------------------------------
+
+### Methods
+
+#### int GetState():
+
+The GetState method is used to get the actual state of the network subsystem.
+
+- param  : None
+- return :
+         + int : Integer with the status of the network. (see Network Status table)
+
+---------------------------------
+
+### Constants
+
+#### Network Status table
+
+Name                      | Value | Description
+------------------------- | ----- | -----------
+                          | 0     | 
+						  | 1     | 
+						  | 2     | 
+						  | 3     | 
+						  | 4     | 
+
+#### 
+
+---------------------------------
+
+### Example
+
+This is a short example only covering the basic operations.<br>
+For a more robust and detailed implementation, go see the example project file BLink_Network_example.java
+
+~~~~{.java}
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import io.grpc.ManagedChannel;
+import io.grpc.ManagedChannelBuilder;
+
+public class BLink_Network_example {
+
+  String host = "localhost";
+  int port = 50051;
+
+  public void testGPIO() {
+    final MannagedChannel channel = ManagedChannelBuilder.forAddress(host, port).usePlaintext(true).build();
+    final BLink_Network networkService =  = new BLink_Network(channel);
+    
+	try {
+      // get the network state
+      int state = networkService.getState();
+
+	  System.out.print(state);
+			
+    } finally {
+      channel.shutdown().awaitTermination(5, TimeUnit.SECONDS);
+    }
+  }
+}
+~~~~
+
+---------------------------------
+
+[Return to BLink services](blinkServices.md)

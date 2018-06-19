@@ -1,0 +1,241 @@
+// BLink Protocol v0.01
+
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_outer_classname = "BLink";
+
+package blink_grpc;
+
+// ======== Error Handling ========
+message Error {
+    int32 errorCode = 1;
+    string errorMessage = 2;
+} 
+
+// ======== Gpio Protocol ========
+service Gpio_Service {
+    rpc Gpio_Set (Gpio_Set_Request) returns (Gpio_Set_Reply) {}
+    rpc Gpio_Get (Gpio_Get_Request) returns (Gpio_Get_Reply) {}
+}
+
+message Gpio_Set_Request {
+    string name = 1;
+    bool requestedState = 2;
+}
+
+message Gpio_Set_Reply {
+    Error error = 1;
+}
+
+message Gpio_Get_Request {
+    string name  = 1;
+}
+
+message Gpio_Get_Reply {
+    bool value = 1;
+    Error error = 2;
+}
+
+// ======== SkyHawkPowerManager Protocol ========
+service SkyHawkPowerManager_Service {
+    rpc SkyHawkPmgr_GetRegister (SkyHawkPmgr_GetRegister_Request) returns (SkyHawkPmgr_GetRegister_Reply) {}
+    rpc SkyHawkPmgr_SetRegister (SkyHawkPmgr_SetRegister_Request) returns (SkyHawkPmgr_SetRegister_Reply) {}
+    rpc SkyHawkPmgr_UpdateFW (SkyHawkPmgr_UpdateFW_Request) returns (SkyHawkPmgr_UpdateFW_Reply) {}
+    rpc SkyHawkPmgr_GetFWVersion (SkyHawkPmgr_GetFWVersion_Request) returns (SkyHawkPmgr_GetFWVersion_Reply) {}
+    rpc SkyHawkPmgr_GetHWVersion (SkyHawkPmgr_GetHWVersion_Request) returns (SkyHawkPmgr_GetHWVersion_Reply) {}
+}
+
+message SkyHawkPmgr_GetRegister_Request {
+    string regName = 1;
+}
+
+message SkyHawkPmgr_GetRegister_Reply {
+    int32 value = 1;
+    Error error = 2;
+}
+
+message SkyHawkPmgr_SetRegister_Request {
+    string regName = 1;
+    int32 value = 2;
+}
+
+message SkyHawkPmgr_SetRegister_Reply {
+    Error error = 1;
+}
+
+message SkyHawkPmgr_UpdateFW_Request {
+    string filePath = 1;
+}
+
+message SkyHawkPmgr_UpdateFW_Reply {
+    bool success = 1;
+    Error error = 2;
+}
+
+message SkyHawkPmgr_GetFWVersion_Request {
+}
+
+message SkyHawkPmgr_GetFWVersion_Reply {
+    string fwVersion = 1;
+    Error error = 2;
+}
+
+message SkyHawkPmgr_GetHWVersion_Request {
+}
+
+message SkyHawkPmgr_GetHWVersion_Reply {
+    int32 hwVersion = 1;
+    Error error = 2;
+}
+
+// ======== Network Protocol ========
+message Connection {
+    string id = 1;
+    string uuid = 2;
+}
+
+service Network_Service {
+    rpc Network_GetState(Network_GetState_Request) returns (Network_GetState_Reply) {}
+}
+
+message Network_GetState_Request {
+}
+
+message Network_GetState_Reply {    
+    uint32 networkState = 1;
+    Error error = 2;
+}
+
+// ======== SerialPort Protocol ========
+service SerialPort_Service {
+    rpc SerialPort_Read(SerialPort_Read_Request) returns (stream SerialPort_Read_Reply) {}
+    rpc SerialPort_Write(SerialPort_Write_Request) returns (SerialPort_Write_Reply) {}
+    
+    // Not implemented yet
+    rpc SerialPort_Config(SerialPort_Config_Request) returns (SerialPort_Config_Reply) {} 
+}
+
+message SerialPort_Write_Request {
+    string deviceName = 1;
+    bytes data = 2;
+}
+
+message SerialPort_Write_Reply {
+    Error error = 1;
+}
+
+message SerialPort_Read_Request {
+    string deviceName = 1;
+}
+
+message SerialPort_Read_Reply {    
+    bytes data = 1;
+    Error error = 2;
+}
+
+// Not implemented yet
+message SerialPort_Config_Request {  
+    string deviceName  = 1;
+    string devicePath  = 2;  
+    int32  baudrate    = 3;
+    string parity	   = 4;
+    int32  charSize    = 5;
+    string flowControl = 7;
+    string stopBits	   = 6;
+}
+
+// Not implemented yet
+message SerialPort_Config_Reply {    
+    Error error = 1;
+}
+
+// ======== Network.Wifi Protocol ========
+service Wifi_Service {
+    rpc Wifi_GetAccessPoints(Wifi_GetAccessPoints_Request) returns (Wifi_GetAccessPoints_Reply) {}
+    rpc Wifi_AddConnection(Wifi_AddConnection_Request) returns (Wifi_AddConnection_Reply) {}
+    rpc Wifi_GetConnections(Wifi_GetConnections_Request) returns (Wifi_GetConnections_Reply) {}
+    rpc Wifi_Connect(Wifi_Connect_Request) returns (Wifi_Connect_Reply) {}
+    rpc Wifi_RemoveConnection(Wifi_RemoveConnection_Request) returns (Wifi_RemoveConnection_Reply) {}
+    rpc Wifi_SetAutoConnect(Wifi_SetAutoConnect_Request) returns (Wifi_SetAutoConnect_Reply) {}
+}
+
+message Wifi_GetAccessPoints_Request {
+}
+
+message Wifi_GetAccessPoints_Reply {
+    message AccessPoint {
+        string ssid = 1;
+        uint32 signalQuality = 2;
+    }
+    repeated AccessPoint accessPoint = 2;
+    Error error = 3;
+}
+
+message Wifi_AddConnection_Request {
+    string id = 1;
+    string ssid = 2;
+    string psk = 3;
+    bool persistent = 4;
+}
+
+message Wifi_AddConnection_Reply {
+    Error error = 1;
+}
+
+message Wifi_GetConnections_Request {
+}
+
+message Wifi_GetConnections_Reply {
+    repeated Connection wifiConnection = 1;
+    Error error = 2;
+}
+
+message Wifi_Connect_Request {
+    string id = 1;
+}
+
+message Wifi_Connect_Reply {
+    Error error = 1;
+}
+
+message Wifi_RemoveConnection_Request {
+    string id = 1;
+}
+
+message Wifi_RemoveConnection_Reply {
+    Error error = 1;
+}
+
+message Wifi_SetAutoConnect_Request {
+    bool value = 1;
+}
+
+message Wifi_SetAutoConnect_Reply {
+    Error error = 1;
+}
+
+
+// ======== RTC Protocol ========
+service RTC_Service {
+    rpc RTC_GetTime(RTC_GetTime_Request) returns (RTC_GetTime_Reply) {}
+    
+    // NTP service will automatically update the time with a valid internet connection
+    rpc RTC_SetTime(RTC_SetTime_Request) returns (RTC_SetTime_Reply) {}
+}
+
+message RTC_GetTime_Request {
+}
+
+message RTC_GetTime_Reply {
+    uint64 unixTimestamp = 1;
+    Error error = 2;
+}
+
+message RTC_SetTime_Request {
+    uint64 unixTimestamp = 1;
+}
+
+message RTC_SetTime_Reply {
+    Error error = 1;
+}

@@ -1,0 +1,85 @@
+RTC Service
+============
+
+The RTC service is used to interact with the on board RTC. It is used to keep track of time.
+
+This implementation does not handles errors. See [services](services.md) to learn how to implement error handling in this wrapper.
+
+### Instantiation
+
+~~~~{.java}
+String host = "localhost";
+int port = 50051;
+
+final MannagedChannel channel = ManagedChannelBuilder.forAddress(host, port).usePlaintext(true).build();
+final BLink_RTC rtcService =  = new BLink_RTC(channel);
+~~~~
+
+---------------------------------
+
+### Methods
+
+#### long GetTime():
+
+The GetTime method is used to get the time on the device (unix timestamp).
+
+- param  : None
+- return : 
+         + long : The current unix timestamp.
+		 
+#### void SetTime(long unixTimestamp):
+
+The GSetTime method is used to gset the time on the device (unix timestamp).
+
+- param  : 
+         + long unixTimestamp : The timestamp we want to set on the device.
+- return : None
+
+---------------------------------
+
+### Constants
+
+#### 
+
+---------------------------------
+
+### Example
+
+This is a short example only covering the basic operations.<br>
+For a more robust and detailed implementation, go see the example project file BLink_RTC_example.java
+
+~~~~{.java}
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import io.grpc.ManagedChannel;
+import io.grpc.ManagedChannelBuilder;
+
+public class BLink_RTC_example {
+
+  String host = "localhost";
+  int port = 50051;
+
+  public void testGPIO() {
+    final MannagedChannel channel = ManagedChannelBuilder.forAddress(host, port).usePlaintext(true).build();
+    final BLink_RTC rtcService =  = new BLink_RTC(channel);
+    
+	try {
+      // RTC Set Example
+      rtcService.setTime(1528478686);  // 6 June 2018
+
+      // RTC Get Example
+      long timestamp = rtcService.getTime();
+	  System.out.print(timestamp);
+			
+    } finally {
+      channel.shutdown().awaitTermination(5, TimeUnit.SECONDS);
+    }
+  }
+}
+~~~~
+
+---------------------------------
+
+[Return to BLink services](blinkServices.md)

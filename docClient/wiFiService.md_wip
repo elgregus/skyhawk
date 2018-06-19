@@ -1,0 +1,142 @@
+WiFi Service
+============
+
+The WiFi service is used to manage the WiFi connections.
+
+This implementation does not handles errors. See [services](services.md) to learn how to implement error handling in this wrapper.
+
+### Instantiation
+
+~~~~{.java}
+String host = "localhost";
+int port = 50051;
+
+final MannagedChannel channel = ManagedChannelBuilder.forAddress(host, port).usePlaintext(true).build();
+final BLink_WiFi wifiService =  = new BLink_WiFi(channel);
+~~~~
+
+---------------------------------
+
+### Methods
+
+#### java.util.List<AccessPoint> GetAccessPoints():
+
+The GetAccessPoints method is used to get all access points nearby.<br>
+Throws StatusRuntimeException.
+
+- param  : None
+- return : 
+         + java.util.List<AccessPoint> : A list of all access points nearby
+
+#### java.util.List<Connection> GetConnections():
+
+The GetConnections method is used to get all connections points.<br>
+Throws StatusRuntimeException.
+
+- param  : None
+- return : 
+         + java.util.List<Connection> : A list of all connections points nearby
+		 
+#### void Connect(String id):
+
+The Connect method is used to connect to a wifi connection using it's id.<br>
+Throws StatusRuntimeException.
+
+- param  :
+         + String id : String containing the id of the connection we want to connect to.
+- return : None
+
+#### void AddConnection(String id, String ssid, String psk, Boolean persistent):
+
+The AddConnection method is used to add a connection to the connection list.
+Throws StatusRuntimeException.
+
+- param  :
+         + String id : String containing the id of the connection we want to add.
+		 + String ssid : String containing the ssid of the connection we want to add.
+		 + String psk : String containing the pre-shared key of the connection we want to add
+         + Boolean id : Is the connection persistent.
+- return : None
+
+####void AutoConnect(Boolean value):
+The AutoConnect method is used to tell the WiFi if we want to automatically connect to a connection when not connected.
+- param  :
+         + Boolean value : Enable auto connect (true) or disable auto connect (false).
+- return : None
+
+---------------------------------
+
+### Objects
+
+#### AccessPoint
+
+- Members :
+          + String ssid : ssid of the access point.
+		  + uint signalQuality : Quality of the signal.
+-Methods : None
+
+#### Connection
+
+- Members :
+          + String id : id of the connection.
+		  + String uuid : uuid of the connection.
+-Methods : None
+
+---------------------------------
+
+### Constants
+
+#### 
+
+---------------------------------
+
+### Example
+
+This is a short example only covering the basic operations.<br>
+For a more robust and detailed implementation, go see the example project file BLink_WiFi_example.java
+
+~~~~{.java}
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import io.grpc.ManagedChannel;
+import io.grpc.ManagedChannelBuilder;
+
+public class BLink_WiFi_example {
+
+  String host = "localhost";
+  int port = 50051;
+
+  public void testGPIO() {
+    final MannagedChannel channel = ManagedChannelBuilder.forAddress(host, port).usePlaintext(true).build();
+    final BLink_WiFi wifiService =  = new BLink_WiFi(channel);
+    
+	try {
+      // WiFi Example
+      java.util.List<AccessPoint> accessPoints = wifiService.GetAccessPoints();
+      for (AccessPoint item : accessPoints) {
+        logger.info("SSID: " + item.getSsid() + " Signal: " + item.getSignalQuality() + "%");
+      }
+      
+      // Connect to a WiFi access point
+      wifiService.AddConnection("test", "ssid", "psk134567234", false);
+      wifiService.Connect("brio");     
+      wifiService.AutoConnect(true); // optional, use to re-connect when signal is temporarily lost
+      
+      // Print current WiFi connections
+      java.util.List<Connection> wifiConnections = wifiService.GetConnections();
+      for (Connection item : wifiConnections) {
+          logger.info("ID: " + item.getId() + " " + item.getUuid());
+      }
+			
+    } finally {
+      channel.shutdown().awaitTermination(5, TimeUnit.SECONDS);
+    }
+  }
+}
+~~~~
+
+---------------------------------
+
+[Return to BLink services](blinkServices.md)
