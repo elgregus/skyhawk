@@ -1,1 +1,3 @@
-This is a dummy file. It should be edited or removed from the repository.
+This is a public repository containing the lastest version of BLink_demo and documentation.
+
+Content in this repo may not be ready for official release yet, use with caution.
