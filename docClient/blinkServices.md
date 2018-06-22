@@ -12,8 +12,8 @@ However, you may still adapt them to implement your own [Error Handling](errorHa
  + Provides methods to get and set GPIOs.
 [comment]: <> (- [Network](networkService.md)
 [comment]: <> ( + Provides a method to get the network actual state.
-[comment]: <> (- [Serial Port](serialPortService.md)
-[comment]: <> ( + Provides methods to read/write and configure the serial port.
+- [Serial Port](serialPortService.md)
+ + Provides methods to read/write and configure the serial port.
 [comment]: <> (- [WiFi](wiFiService.md)
 [comment]: <> ( + Provides methods to control the wifi.
 [comment]: <> (- [RTC](rTCService.md)
