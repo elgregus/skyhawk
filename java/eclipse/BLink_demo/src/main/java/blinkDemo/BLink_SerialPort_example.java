@@ -51,14 +51,14 @@ public class BLink_SerialPort_example {
       // Serial Port Example (Echo of RX:ttymxc1 into TX:ttymxc1)
       blink.serialReadStub = SerialPort_ServiceGrpc.newStub(blink.channel);
       blink.serialWriteStub = SerialPort_ServiceGrpc.newBlockingStub(blink.channel);     
-      SerialPort_Read_Request readRequest = SerialPort_Read_Request.newBuilder().setDeviceName("RS232").build();
+      SerialPort_Read_Request readRequest = SerialPort_Read_Request.newBuilder().setDeviceName("BaseSerial").build();
       
       blink.serialReadStub.serialPortRead(readRequest, new StreamObserver<blink_grpc.SerialPort_Read_Reply>() {
 		public void onNext(SerialPort_Read_Reply value) {
 			// Change config on c press
 			System.out.println("New char : " + value.getData().toStringUtf8());
 			if(value.getData().toStringUtf8().equals("c")) {
-				SerialPort_Config_Request configRequest = SerialPort_Config_Request.newBuilder().setDeviceName("RS232")
+				SerialPort_Config_Request configRequest = SerialPort_Config_Request.newBuilder().setDeviceName("BaseSerial")
 						.setBaudrate(9600)
 						.setCharSize(8)
 						.setDevicePath("/dev/ttymxc1")
@@ -68,7 +68,7 @@ public class BLink_SerialPort_example {
 						.build();
 				blink.serialWriteStub.serialPortConfig(configRequest);
 			} else if(value.getData().toStringUtf8().equals("q")) {
-				SerialPort_StopReading_Request stopReadingRequest = SerialPort_StopReading_Request.newBuilder().setDeviceName("RS232")
+				SerialPort_StopReading_Request stopReadingRequest = SerialPort_StopReading_Request.newBuilder().setDeviceName("BaseSerial")
 					.build();
 				blink.serialWriteStub.serialPortStopReading(stopReadingRequest);
 				// onNext will not be called after stopping, exit gracefully

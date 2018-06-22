@@ -86,6 +86,19 @@ Sends a command to stop a stream of reading on a specified serial device.
 
 ### Constants
 
+#### Skyhawk Capabilities
+Here is a list of capabilites for each configuration field
+
+Field          | Type    | Values                                      
+---------------|-------- | --------------------------------------------
+Name           | String  | "BaseSerial" : DB9 connector <br> "MezzSerial" : Mezz connector
+Path           | String  | Any valid path                                
+Baudrate       | int     | Any int                                      
+Parity         | String  | "none", "odd", "even"                        
+Character Size | int     | 5 to 9
+Flow Control   | String  | "none", "software", "hardware"
+Stop Bits      | String  | "one", "onepointfive", "two"
+
 #### Default Configurations
 
 **Path :** /dev/ttymxc1
@@ -135,7 +148,7 @@ public class BLink_SerialPort_example {
 
   private static final Logger logger = Logger.getLogger(BLink_SkyHawkPowerManager_example.class.getName());
 
-  /** Construct client connecting to BLink server at {@code host:port}. */
+  // Construct client connecting to BLink server
   public BLink_SerialPort_example(String host, int port) {
     this(ManagedChannelBuilder.forAddress(host, port)
         // Channels are secure by default (via SSL/TLS). For the example we disable TLS to avoid
@@ -143,7 +156,7 @@ public class BLink_SerialPort_example {
         .usePlaintext(true).build());
   }
 
-  /** Construct client for accessing serialPort service using the existing channel. */
+  // Construct client for accessing serialPort service using the existing channel. 
   public BLink_SerialPort_example(ManagedChannel channel) {
     this.channel = channel;
   }
@@ -159,14 +172,14 @@ public class BLink_SerialPort_example {
       // Serial Port Example (Echo of RX:ttymxc1 into TX:ttymxc1)
       blink.serialReadStub = SerialPort_ServiceGrpc.newStub(blink.channel);
       blink.serialWriteStub = SerialPort_ServiceGrpc.newBlockingStub(blink.channel);     
-      SerialPort_Read_Request readRequest = SerialPort_Read_Request.newBuilder().setDeviceName("RS232").build();
+      SerialPort_Read_Request readRequest = SerialPort_Read_Request.newBuilder().setDeviceName("BaseSerial").build();
       
       blink.serialReadStub.serialPortRead(readRequest, new StreamObserver<blink_grpc.SerialPort_Read_Reply>() {
 		public void onNext(SerialPort_Read_Reply value) {
 			// Change config on c press
 			System.out.println("New char : " + value.getData().toStringUtf8());
 			if(value.getData().toStringUtf8().equals("c")) {
-				SerialPort_Config_Request configRequest = SerialPort_Config_Request.newBuilder().setDeviceName("RS232")
+				SerialPort_Config_Request configRequest = SerialPort_Config_Request.newBuilder().setDeviceName("BaseSerial")
 						.setBaudrate(9600)
 						.setCharSize(8)
 						.setDevicePath("/dev/ttymxc1")
@@ -181,7 +194,7 @@ public class BLink_SerialPort_example {
 				blink.serialWriteStub.serialPortStopReading(stopReadingRequest);
 				// onNext will not be called after stopping, exit gracefully
 			} else {
-				SerialPort_Write_Request writeRequest = SerialPort_Write_Request.newBuilder().setDeviceName("RS232").setData(value.getData()).build();
+				SerialPort_Write_Request writeRequest = SerialPort_Write_Request.newBuilder().setDeviceName("BaseSerial").setData(value.getData()).build();
 				blink.serialWriteStub.serialPortWrite(writeRequest);
 			}
 		}
