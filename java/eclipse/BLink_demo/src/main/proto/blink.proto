@@ -1,4 +1,4 @@
-// BLink Protocol v0.01
+// BLink Protocol v0.03
 
 syntax = "proto3";
 
@@ -111,8 +111,7 @@ message Network_GetState_Reply {
 service SerialPort_Service {
     rpc SerialPort_Read(SerialPort_Read_Request) returns (stream SerialPort_Read_Reply) {}
     rpc SerialPort_Write(SerialPort_Write_Request) returns (SerialPort_Write_Reply) {}
-    
-    // Not implemented yet
+    rpc SerialPort_StopReading(SerialPort_StopReading_Request) returns (SerialPort_StopReading_Reply) {}
     rpc SerialPort_Config(SerialPort_Config_Request) returns (SerialPort_Config_Reply) {} 
 }
 
@@ -134,7 +133,14 @@ message SerialPort_Read_Reply {
     Error error = 2;
 }
 
-// Not implemented yet
+message SerialPort_StopReading_Request {
+    string deviceName = 1;
+}
+
+message SerialPort_StopReading_Reply {
+    Error error = 1;
+}
+
 message SerialPort_Config_Request {  
     string deviceName  = 1;
     string devicePath  = 2;  
@@ -145,7 +151,6 @@ message SerialPort_Config_Request {
     string stopBits	   = 6;
 }
 
-// Not implemented yet
 message SerialPort_Config_Reply {    
     Error error = 1;
 }

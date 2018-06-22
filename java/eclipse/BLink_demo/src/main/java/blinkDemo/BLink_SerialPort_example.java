@@ -10,6 +10,7 @@ import blink_grpc.SerialPort_Read_Reply;
 import blink_grpc.SerialPort_Read_Request;
 import blink_grpc.SerialPort_Config_Request;
 import blink_grpc.SerialPort_Config_Reply;
+import blink_grpc.SerialPort_StopReading_Request;
 import blink_grpc.SerialPort_ServiceGrpc;
 import blink_grpc.SerialPort_ServiceGrpc.SerialPort_ServiceBlockingStub;
 import blink_grpc.SerialPort_ServiceGrpc.SerialPort_ServiceStub;
@@ -34,7 +35,7 @@ public class BLink_SerialPort_example {
         .usePlaintext(true).build());
   }
 
-  /** Construct client for accessing GPIO service using the existing channel. */
+  /** Construct client for accessing serialPort service using the existing channel. */
   public BLink_SerialPort_example(ManagedChannel channel) {
     this.channel = channel;
   }
@@ -55,7 +56,8 @@ public class BLink_SerialPort_example {
       blink.serialReadStub.serialPortRead(readRequest, new StreamObserver<blink_grpc.SerialPort_Read_Reply>() {
 		public void onNext(SerialPort_Read_Reply value) {
 			// Change config on c press
-			if(value.getData().toString().equals("c")) {
+			System.out.println("New char : " + value.getData().toStringUtf8());
+			if(value.getData().toStringUtf8().equals("c")) {
 				SerialPort_Config_Request configRequest = SerialPort_Config_Request.newBuilder().setDeviceName("RS232")
 						.setBaudrate(9600)
 						.setCharSize(8)
@@ -65,6 +67,11 @@ public class BLink_SerialPort_example {
 						.setStopBits("one")
 						.build();
 				blink.serialWriteStub.serialPortConfig(configRequest);
+			} else if(value.getData().toStringUtf8().equals("q")) {
+				SerialPort_StopReading_Request stopReadingRequest = SerialPort_StopReading_Request.newBuilder().setDeviceName("RS232")
+					.build();
+				blink.serialWriteStub.serialPortStopReading(stopReadingRequest);
+				// onNext will not be called after stopping, exit gracefully
 			} else {
 				SerialPort_Write_Request writeRequest = SerialPort_Write_Request.newBuilder().setDeviceName("RS232").setData(value.getData()).build();
 				blink.serialWriteStub.serialPortWrite(writeRequest);
