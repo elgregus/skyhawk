@@ -13,7 +13,7 @@ This implementation does not handles errors. See [services](services.md) to lear
 String host = "localhost";
 int port = 50051;
 
-/** Construct client connecting to BLink server at {@code host:port}. */
+  // Construct client connecting to BLink server
   public BLink_SerialPort_example(String host, int port) {
     this(ManagedChannelBuilder.forAddress(host, port)
         // Channels are secure by default (via SSL/TLS). For the example we disable TLS to avoid
@@ -21,7 +21,7 @@ int port = 50051;
         .usePlaintext(true).build());
   }
 
-  /** Construct client for accessing serialport service using the existing channel. */
+  // Construct client for accessing serialPort service using the existing channel. 
   public BLink_SerialPort_example(ManagedChannel channel) {
     this.channel = channel;
   }
