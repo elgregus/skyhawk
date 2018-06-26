@@ -189,7 +189,7 @@ public class BLink_SerialPort_example {
 						.build();
 				blink.serialWriteStub.serialPortConfig(configRequest);
 			} else if(value.getData().toStringUtf8().equals("q")) {
-				SerialPort_StopReading_Request stopReadingRequest = SerialPort_StopReading_Request.newBuilder().setDeviceName("RS232")
+				SerialPort_StopReading_Request stopReadingRequest = SerialPort_StopReading_Request.newBuilder().setDeviceName("BaseSerial")
 					.build();
 				blink.serialWriteStub.serialPortStopReading(stopReadingRequest);
 				// onNext will not be called after stopping, exit gracefully
@@ -204,6 +204,8 @@ public class BLink_SerialPort_example {
 		}
 
 		public void onCompleted() {
+		    System.out.println("COMPLETED");
+			System.exit(0);
 			// TODO Auto-generated method stub
 		}
 		
