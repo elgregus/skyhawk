@@ -244,3 +244,35 @@ message RTC_SetTime_Request {
 message RTC_SetTime_Reply {
     Error error = 1;
 }
+
+// ======== Accelerometer Protocol ========
+service Accelerometer_Service {
+    rpc Accelerometer_Start (Accelerometer_Start_Request) returns (Accelerometer_Start_Reply) {}
+    rpc Accelerometer_Stop (Accelerometer_Stop_Request) returns (Accelerometer_Stop_Reply) {}
+    rpc Accelerometer_Get_Samples (Accelerometer_Get_Samples_Request) returns (Accelerometer_Get_Samples_Reply) {}
+}
+
+message Accelerometer_Start_Request {
+    int32 dataRate = 1;
+    int32 axisRange = 2;
+}
+
+message Accelerometer_Start_Reply {
+    Error error = 1;
+}
+
+message Accelerometer_Stop_Request {
+}
+
+message Accelerometer_Stop_Reply {
+}
+
+message Accelerometer_Get_Samples_Request {
+}
+
+message Accelerometer_Get_Samples_Reply {
+    repeated double xAxis = 1;
+    repeated double yAxis = 2;
+    repeated double zAxis = 3;
+    Error error = 4;
+}
