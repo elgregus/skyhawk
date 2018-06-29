@@ -8,19 +8,10 @@ TODO:
 - Implement trigger functionality
 - Patch driver for timestamp channel
 
-###Instantiation
-
-~~~~{.java}
-String host = "localhost";
-int port = 50051;
-
-final MannagedChannel channel = ManagedChannelBuilder.forAddress(host, port).usePlaintext(true).build();
-final BLink_Accelerometer accelerometerService =  = new BLink_Accelerometer(channel);
-~~~~
 
 ---------------------------------
 
-###Methods
+###Java Methods
 
 ####java.util.List[] getSamples():
 The getSamples method is used to get available sample. <br>
@@ -32,7 +23,7 @@ Note: start() must be called before getSamples().
 
 ####void start(int dataRate, int axisRange):
 The start method is used to start data acquisition with a given data rate and a range (ex: +/- 4g).<br>
-Note: Output data rate should be as low as possible. Higher value means higher CPU usage (caused by interrupts).
+Note: Output data rate in Hz. Higher value means higher CPU usage (caused by interrupts).
 - param  : 
          + int dataRate : Output data rate, can be 0, 10, 50, 100, 200, 400, 800.
          + int axisRange : Range, can be 2, 4, 8.
@@ -45,7 +36,7 @@ The stop method is used to stop accelerometer data acquisition.
 
 ---------------------------------
 
-###Example
+###Java Example
 This is a short example only covering the basic operations.<br>
 For a more robust and detailed implementation, go see the example project file BLink_Accelerometer_example.java
 
