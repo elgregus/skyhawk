@@ -7,35 +7,33 @@ The methods described and the example below will make direct use of gRPC calls.
 
 This implementation does not handles errors. See [services](services.md) to learn how to implement error handling in this wrapper.
 
-### Instantiation
+---------------------------------
 
-~~~~{.java}
-String host = "localhost";
-int port = 50051;
+### Skyhawk Capabilities
+Here is a list of capabilites for each configuration field
 
-  // Construct client connecting to BLink server
-  public BLink_SerialPort_example(String host, int port) {
-    this(ManagedChannelBuilder.forAddress(host, port)
-        // Channels are secure by default (via SSL/TLS). For the example we disable TLS to avoid
-        // needing certificates.
-        .usePlaintext(true).build());
-  }
+Field          | Type    | Values                                      
+---------------|-------- | --------------------------------------------
+Name           | String  | "BaseSerial" : DB9 connector <br> "MezzSerial" : Mezz connector
+Path           | String  | Any valid path                                
+Baudrate       | int     | Any int                                      
+Parity         | String  | "none", "odd", "even"                        
+Character Size | int     | 5 to 9
+Flow Control   | String  | "none", "software", "hardware"
+Stop Bits      | String  | "one", "onepointfive", "two"
 
-  // Construct client for accessing serialPort service using the existing channel. 
-  public BLink_SerialPort_example(ManagedChannel channel) {
-    this.channel = channel;
-  }
+#### Default Configurations
 
-  public void shutdown() throws InterruptedException {
-    channel.shutdown().awaitTermination(5, TimeUnit.SECONDS);
-  }
-
-final BLink_SerialPort_example blink = new BLink_SerialPort_example(host, port);
-~~~~
+**Path :** /dev/ttymxc1
+**Baudrate :** 115200
+**Parity :** none
+**Character size :** 8
+**Flow control :** none
+**Stop bits :** one
 
 ---------------------------------
 
-### Methods
+### Java Methods
 
 Since gRPC always uses a system of request and reply, to simplify this documentation paramters in the request object have simply been tagged as param and return values in the reply object have been tagged as return values.
 
@@ -82,35 +80,10 @@ Sends a command to stop a stream of reading on a specified serial device.
          + String devince Name : Name of the device we want to stop reading from.
 - return : None
 
----------------------------------
-
-### Constants
-
-#### Skyhawk Capabilities
-Here is a list of capabilites for each configuration field
-
-Field          | Type    | Values                                      
----------------|-------- | --------------------------------------------
-Name           | String  | "BaseSerial" : DB9 connector <br> "MezzSerial" : Mezz connector
-Path           | String  | Any valid path                                
-Baudrate       | int     | Any int                                      
-Parity         | String  | "none", "odd", "even"                        
-Character Size | int     | 5 to 9
-Flow Control   | String  | "none", "software", "hardware"
-Stop Bits      | String  | "one", "onepointfive", "two"
-
-#### Default Configurations
-
-**Path :** /dev/ttymxc1
-**Baudrate :** 115200
-**Parity :** none
-**Character size :** 8
-**Flow control :** none
-**Stop bits :** one
 
 ---------------------------------
 
-### Example
+### Java Example
 
 This is a short example only covering the basic operations.<br>
 To run this example, plug a RS232 cable on your target and execute BLink_SerialPort_example.jar-jar-with-dependencies.jar.
