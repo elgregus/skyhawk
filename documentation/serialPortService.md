@@ -14,8 +14,7 @@ Here is a list of capabilites for each configuration field
 
 Field          | Type    | Values                                      
 ---------------|-------- | --------------------------------------------
-Name           | String  | "BaseSerial" : DB9 connector <br> "MezzSerial" : Mezz connector
-Path           | String  | Any valid path                                
+Name           | String  | "BaseSerial" : DB9 connector <br> "MezzSerial" : Mezz connector                              
 Baudrate       | int     | Any int                                      
 Parity         | String  | "none", "odd", "even"                        
 Character Size | int     | 5 to 9
@@ -24,7 +23,6 @@ Stop Bits      | String  | "one", "onepointfive", "two"
 
 #### Default Configurations
 
-**Path :** /dev/ttymxc1
 **Baudrate :** 115200
 **Parity :** none
 **Character size :** 8
@@ -58,13 +56,12 @@ Writes the bytes to the requested serial device. Bytes must be in UTF-8.
 		 + bytes data : All the bytes that we want to write.
 - return : None
 
-#### void Serial_Config(String deviceName, String devicePath, int baudrate, String parity, int charSize, String stopBits, String flowControl)
+#### void Serial_Config(String deviceName, int baudrate, String parity, int charSize, String stopBits, String flowControl)
 
 The Config method is used to configure a serial port on the device.
 
 - param : 
         + String deviceName : Name of the device we want to configure.
-        + String devicePath : Path to the device we want to configure.
 		+ int baudrate : Baudrate of the device we want to configure.
 		+ String parity : Parity of the device we want to configure.
 		+ int charSize : Character size of the device we want to configure.
@@ -155,7 +152,6 @@ public class BLink_SerialPort_example {
 				SerialPort_Config_Request configRequest = SerialPort_Config_Request.newBuilder().setDeviceName("BaseSerial")
 						.setBaudrate(9600)
 						.setCharSize(8)
-						.setDevicePath("/dev/ttymxc1")
 						.setFlowControl("none")
 						.setParity("none")
 						.setStopBits("one")
