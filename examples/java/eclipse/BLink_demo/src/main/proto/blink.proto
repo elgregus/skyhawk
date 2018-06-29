@@ -142,12 +142,11 @@ message SerialPort_StopReading_Reply {
 }
 
 message SerialPort_Config_Request {  
-    string deviceName  = 1;
-    string devicePath  = 2;  
-    int32  baudrate    = 3;
-    string parity	   = 4;
-    int32  charSize    = 5;
-    string flowControl = 7;
+    string deviceName  = 1; 
+    int32  baudrate    = 2;
+    string parity	   = 3;
+    int32  charSize    = 4;
+    string flowControl = 5;
     string stopBits	   = 6;
 }
 

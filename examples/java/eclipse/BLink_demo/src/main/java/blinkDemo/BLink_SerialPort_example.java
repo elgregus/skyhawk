@@ -61,7 +61,6 @@ public class BLink_SerialPort_example {
 				SerialPort_Config_Request configRequest = SerialPort_Config_Request.newBuilder().setDeviceName("BaseSerial")
 						.setBaudrate(9600)
 						.setCharSize(8)
-						.setDevicePath("/dev/ttymxc1")
 						.setFlowControl("none")
 						.setParity("none")
 						.setStopBits("one")
