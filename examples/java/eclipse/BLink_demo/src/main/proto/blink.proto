@@ -17,6 +17,8 @@ message Error {
 service Gpio_Service {
     rpc Gpio_Set (Gpio_Set_Request) returns (Gpio_Set_Reply) {}
     rpc Gpio_Get (Gpio_Get_Request) returns (Gpio_Get_Reply) {}
+    rpc Gpio_StartStreaming (Gpio_StartStreaming_Request) returns (stream Gpio_StartStreaming_Reply) {}
+    rpc Gpio_StopStreaming (Gpio_StopStreaming_Request) returns (Gpio_StopStreaming_Reply) {}
 }
 
 message Gpio_Set_Request {
@@ -34,6 +36,23 @@ message Gpio_Get_Request {
 
 message Gpio_Get_Reply {
     bool value = 1;
+    Error error = 2;
+}
+
+message Gpio_StartStreaming_Request {
+    string name  = 1;
+    string edge = 2;
+}
+
+message Gpio_StartStreaming_Reply {
+    bool value = 1;
+}
+
+message Gpio_StopStreaming_Request {
+    string name  = 1;
+}
+
+message Gpio_StopStreaming_Reply {
     Error error = 2;
 }
 
