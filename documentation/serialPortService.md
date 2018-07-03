@@ -35,7 +35,7 @@ Stop Bits      | String  | "one", "onepointfive", "two"
 
 Since gRPC always uses a system of request and reply, to simplify this documentation paramters in the request object have simply been tagged as param and return values in the reply object have been tagged as return values.
 
-#### uint64 Serial_Read():
+#### void Serial_Read():
 
 The Read method is used to read on the serial port of the device.
 It will create a stream of data that can be accessed in the : "onNext" callback.

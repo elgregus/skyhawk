@@ -22,3 +22,5 @@ However, you may still adapt them to implement your own [Error Handling](errorHa
  + Provides methods to control the power manager.
 - [Accelerometer](accelerometerService.md)
  + Provides methods to control the accelerometer.
+ - [Wiegand](wiegandService.md)
+ + Provides methods to read the wiegand port.
