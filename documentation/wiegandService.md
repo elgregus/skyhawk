@@ -1,7 +1,7 @@
 Wiegand Service
 ============
 
-The wiegand Service is used read the wiegand port on the device (on the Mezz). You may only read this port. All configuration is handled by the server.
+The wiegand Service is used to read the wiegand port on the Mezz of the device. This port is read only and all configuration is handled by the server.
 
 The methods described and the example below will make direct use of gRPC calls.
 
@@ -11,7 +11,7 @@ This implementation does not handles errors. See [services](services.md) to lear
 
 ### Java Methods
 
-Since gRPC always uses a system of request and reply, to simplify this documentation paramters in the request object have simply been tagged as param and return values in the reply object have been tagged as return values.
+Since gRPC uses a system of request and reply, paramters in the request object have been tagged as param and return values in the reply object have been tagged as return values.
 
 #### void Wiegand_Read():
 
