@@ -52,16 +52,8 @@ public class BLink_Wiegand_example {
       
       blink.wiegandReadStub.wiegandRead(readRequest, new StreamObserver<blink_grpc.Wiegand_Read_Reply>() {
 		public void onNext(Wiegand_Read_Reply value) {
-			// Change config on c press
-			System.out.println("New long : " + Long.toString(value.getData()));
-			// Stop reading wiegand on this value 
-			// In our case the value is sent from a home made wiegand device
-//			if(value.getData() == 0x388f77d) {
-//				Wiegand_StopReading_Request stopReadingRequest = Wiegand_StopReading_Request.newBuilder().setDeviceName("MezzWiegand")
-//					.build();
-//				blink.wiegandWriteStub.wiegandStopReading(stopReadingRequest);
-//				// onNext will not be called after stopping, exit gracefully
-//			}
+			// Print the received value
+			System.out.println("New long : " + Long.toString(value.getData())); 
 		}
 
 		public void onError(Throwable t) {
@@ -77,7 +69,12 @@ public class BLink_Wiegand_example {
       });
 
       while(true){
-          Thread.sleep(1000);
+    	// Stop reading wiegand after 60 seconds
+        Thread.sleep(60000);
+        Wiegand_StopReading_Request stopReadingRequest = Wiegand_StopReading_Request.newBuilder()
+                .setDeviceName("MezzWiegand")
+                .build();
+        blink.wiegandWriteStub.wiegandStopReading(stopReadingRequest);
       }
 
 			

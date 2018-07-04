@@ -43,7 +43,7 @@ Sends a command to stop a stream of reading on a specified wiegand device.
 This is a short example only covering the basic operations.<br>
 To run this example, plug a wiegand device on your target and execute BLink_Wiegand_example.jar-jar-with-dependencies.jar.
 Every sent from the wiegand device will show in the console.
-In comment, you see the code to do a stopReading, put your stop conditions in it to try this feature.
+This example executes for 60 seconds, and then stops the streaming and exits.
 
 ~~~~{.java}
 package blinkDemo;
@@ -100,16 +100,8 @@ public class BLink_Wiegand_example {
       
       blink.wiegandReadStub.wiegandRead(readRequest, new StreamObserver<blink_grpc.Wiegand_Read_Reply>() {
 		public void onNext(Wiegand_Read_Reply value) {
-			// Change config on c press
-			System.out.println("New long : " + Long.toString(value.getData()));
-			// Stop reading wiegand on this value 
-			// In our case the value is sent from a home made wiegand device
-//			if(value.getData() == 0x388f77d) {
-//				Wiegand_StopReading_Request stopReadingRequest = Wiegand_StopReading_Request.newBuilder().setDeviceName("MezzWiegand")
-//					.build();
-//				blink.wiegandWriteStub.wiegandStopReading(stopReadingRequest);
-//				// onNext will not be called after stopping, exit gracefully
-//			}
+			// Print the received value
+			System.out.println("New long : " + Long.toString(value.getData())); 
 		}
 
 		public void onError(Throwable t) {
@@ -125,7 +117,12 @@ public class BLink_Wiegand_example {
       });
 
       while(true){
-          Thread.sleep(1000);
+    	// Stop reading wiegand after 60 seconds
+        Thread.sleep(60000);
+        Wiegand_StopReading_Request stopReadingRequest = Wiegand_StopReading_Request.newBuilder()
+                .setDeviceName("MezzWiegand")
+                .build();
+        blink.wiegandWriteStub.wiegandStopReading(stopReadingRequest);
       }
 
 			
