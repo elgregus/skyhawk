@@ -59,6 +59,26 @@ Only input GPIOs may be used with the getGPIO method, requests on output GPIOs w
 - return :
          + Boolean : Value of the GPIO, can be either true (1) or false (0).
 
+#### Void StartStreamGPIO(String name, String edge):
+
+The StartStreamGPIO method is used as a notification callback for trigger event.
+It will create a new data stream with the GPIO value (accessible in onNext() callback).
+You only need to provide the GPIO name and the edge type.
+
+- param  :
+         + String name   : Name of the GPIO.
+         + String edge   : Desired edge (rising, falling, both)
+
+- return : None
+
+
+#### void StopStreamGPIO(String name):
+
+The StopStreamGPIO method is used to stop the GPIO stream.
+
+- param  :
+         + String name   : Name of the GPIO.
+- return : None
 
 ---------------------------------
 
@@ -91,7 +111,16 @@ public class BLink_GPIO_example {
 
       // GPIO Get Example
       Boolean value = gpioService.getGPIO("DIN1");
-	  System.out.print(value);
+      logger.log(Level.INFO, "GPIO value: " + value);
+
+      // Start GPIO Stream Example
+      // Non-Blocking call. It will log every rising edge on DIN1
+      // TODO/TBD How the client wants to implement the callback process
+      gpioService.StartStreamGPIO("DIN1", "rising");
+
+      // Wait 1 min. and stop this example
+      Thread.sleep(60000);
+      blink.gpioService.StopStreamGPIO("DIN1");
 			
     } finally {
       channel.shutdown().awaitTermination(5, TimeUnit.SECONDS);
