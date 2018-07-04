@@ -1,4 +1,4 @@
-// BLink Protocol v0.04
+// BLink Protocol v0.05
 
 syntax = "proto3";
 
@@ -161,12 +161,12 @@ message SerialPort_StopReading_Reply {
 }
 
 message SerialPort_Config_Request {  
-    string deviceName  = 1; 
+    string deviceName  = 1;
     int32  baudrate    = 2;
-    string parity	   = 3;
+    string parity      = 3;
     int32  charSize    = 4;
     string flowControl = 5;
-    string stopBits	   = 6;
+    string stopBits    = 6;
 }
 
 message SerialPort_Config_Reply {    
@@ -293,4 +293,27 @@ message Accelerometer_Get_Samples_Reply {
     repeated double yAxis = 2;
     repeated double zAxis = 3;
     Error error = 4;
+}
+
+// ======== Wiegand Protocol ========
+service Wiegand_Service {
+    rpc Wiegand_Read(Wiegand_Read_Request) returns (stream Wiegand_Read_Reply) {}
+    rpc Wiegand_StopReading(Wiegand_StopReading_Request) returns (Wiegand_StopReading_Reply) {}
+}
+
+message Wiegand_Read_Request {
+    string deviceName = 1;
+}
+
+message Wiegand_Read_Reply {    
+    int64 data = 1;
+    Error error = 2;
+}
+
+message Wiegand_StopReading_Request {
+    string deviceName = 1;
+}
+
+message Wiegand_StopReading_Reply {
+    Error error = 1;
 }
