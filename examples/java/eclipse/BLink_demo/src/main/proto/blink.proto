@@ -1,4 +1,4 @@
-// BLink Protocol v0.05
+// BLink Protocol v0.06
 
 syntax = "proto3";
 
@@ -173,6 +173,86 @@ message SerialPort_Config_Reply {
     Error error = 1;
 }
 
+// ======== Modem Protocol ========
+service Modem_Service {
+    rpc Modem_GetStatus(Modem_GetStatus_Request) returns (Modem_GetStatus_Reply) {}
+    rpc Modem_SetAPN(Modem_SetAPN_Request) returns (Modem_SetAPN_Reply) {}
+    rpc Modem_GetAPN(Modem_GetAPN_Request) returns (Modem_GetAPN_Reply) {}
+    rpc Modem_SetRadioPower(Modem_SetRadioPower_Request) returns (Modem_SetRadioPower_Reply) {}
+    rpc Modem_Connect(Modem_Connect_Request) returns (Modem_Connect_Reply) {}
+    rpc Modem_Disconnect(Modem_Disconnect_Request) returns (Modem_Disconnect_Reply) {}
+
+    // Not implemented yet
+    rpc Modem_GetInfo(Modem_GetInfo_Request) returns (Modem_GetInfo_Reply) {}
+    rpc Modem_GetSignalInfo(Modem_GetSignalInfo_Request) returns (Modem_GetSignalInfo_Reply) {}
+    rpc Modem_SendSMS(Modem_SendSMS_Request) returns (Modem_SendSMS_Reply) {}
+    rpc Modem_Update(Modem_Update_Request) returns (Modem_Update_Reply) {}
+
+}
+
+message Modem_GetStatus_Request {
+}
+
+message Modem_GetStatus_Reply {
+}
+
+message Modem_GetInfo_Request {
+}
+
+message Modem_GetInfo_Reply {
+}
+
+message Modem_SetAPN_Request {
+    string apn = 1;
+}
+
+message Modem_SetAPN_Reply {
+}
+
+message Modem_GetAPN_Request {
+}
+
+message Modem_GetAPN_Reply {
+    string apn = 1;
+}
+
+message Modem_GetSignalInfo_Request {
+}
+
+message Modem_GetSignalInfo_Reply {
+}
+
+message Modem_SetRadioPower_Request {
+}
+
+message Modem_SetRadioPower_Reply {
+}
+
+message Modem_SendSMS_Request {
+}
+
+message Modem_SendSMS_Reply {
+}
+
+message Modem_Update_Request {
+}
+
+message Modem_Update_Reply {
+}
+
+message Modem_Connect_Request {
+}
+
+message Modem_Connect_Reply {
+}
+
+message Modem_Disconnect_Request {
+}
+
+message Modem_Disconnect_Reply {
+}
+
+
 // ======== Network.Wifi Protocol ========
 service Wifi_Service {
     rpc Wifi_GetAccessPoints(Wifi_GetAccessPoints_Request) returns (Wifi_GetAccessPoints_Reply) {}
@@ -294,6 +374,7 @@ message Accelerometer_Get_Samples_Reply {
     repeated double zAxis = 3;
     Error error = 4;
 }
+
 
 // ======== Wiegand Protocol ========
 service Wiegand_Service {
