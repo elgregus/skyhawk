@@ -141,7 +141,7 @@ public class BLink_WiFi_example {
       
       // Connect to a WiFi access point
       blink.wifiService.AddConnection("test", "ssid", "psk134567234", false);
-      blink.wifiService.Connect("brio");     
+      blink.wifiService.Connect("test");     
       blink.wifiService.AutoConnect(true); // optional, use to re-connect when signal is temporarily lost
       
       // Print current WiFi connections
