@@ -24,7 +24,13 @@
 		<link>
 			<name>proto</name>
 			<type>2</type>
-			<location>C:/Users/lmajeau/workspace_java/bw112-sw-blink/doc-user/proto</location>
+			<locationURI>PROTO_LOC</locationURI>
 		</link>
 	</linkedResources>
+	<variableList>
+		<variable>
+			<name>PROTO_LOC</name>
+			<value>$%7BPARENT-4-PROJECT_LOC%7D/proto</value>
+		</variable>
+	</variableList>
 </projectDescription>
