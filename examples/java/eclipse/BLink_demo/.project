@@ -20,4 +20,11 @@
 		<nature>org.eclipse.jdt.core.javanature</nature>
 		<nature>org.eclipse.m2e.core.maven2Nature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>proto</name>
+			<type>2</type>
+			<location>C:/Users/lmajeau/workspace_java/bw112-sw-blink/doc-user/proto</location>
+		</link>
+	</linkedResources>
 </projectDescription>
