@@ -38,10 +38,10 @@ public class BLink_SkyHawkPowerManager_example {
     	
     	String fwVersion = blink.skyHawk.getFWVersion();
     	logger.log(Level.INFO, "skyHawkLPM: fwVersion is : " + fwVersion);
-    	if(fwVersion.equals("0.00.001.00")) {
+    	if(fwVersion.equals("0.00.001.01")) {
     		System.out.print(blink.skyHawk.updateFW("fwu_skyhawk_1.00.003.00.bin"));
-    	} else if (fwVersion.equals("0.00.001.01")) {
-    		System.out.print(blink.skyHawk.updateFW("fwu_skyhawk_1.00.003.00.bin"));
+    	} else if (fwVersion.equals("1.00.003.00")) {
+    		System.out.print(blink.skyHawk.updateFW("fwu_skyhawk_0.00.001.01.bin"));
     	} else {
     		logger.log(Level.INFO, "skyHawkLPM: fwVersion Invalid : " + fwVersion);
     	}
