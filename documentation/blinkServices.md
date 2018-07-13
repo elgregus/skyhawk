@@ -14,9 +14,13 @@ However, you may still adapt them to implement your own [Error Handling](errorHa
 [comment]: <> ( + Provides a method to get the network actual state.
 - [Serial Port](serialPortService.md)
  + Provides methods to read/write and configure the serial port.
-[comment]: <> (- [WiFi](wiFiService.md)
-[comment]: <> ( + Provides methods to control the wifi.
-[comment]: <> (- [RTC](rTCService.md)
-[comment]: <> ( + Provides methods to get/set time.
+- [WiFi](wiFiService.md)
+ + Provides methods to control the wifi.
+- [RTC](rTCService.md)
+ + Provides methods to get/set time.
 - [SkyHawkPowerManager](skyHawkPmgrService.md)
  + Provides methods to control the power manager.
+- [Accelerometer](accelerometerService.md)
+ + Provides methods to control the accelerometer.
+- [Wiegand](wiegandService.md)
+ + Provides methods to read the wiegand port.

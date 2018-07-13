@@ -42,9 +42,17 @@ public class BLink_GPIO_example {
 
       // GPIO Get Example
       Boolean value = blink.gpioService.getGPIO("DIN1");
-
       logger.log(Level.INFO, "GPIO value: " + value);
-			
+
+      // GPIO Stream Example
+      // Non-Blocking call, log every rising edge on DIN1
+      // TODO/TBD How the client wants to implement the callback process
+      blink.gpioService.StartStreamGPIO("DIN1", "rising");
+
+      // Wait 1 min. and stop this example
+      Thread.sleep(60000);
+      blink.gpioService.StopStreamGPIO("DIN1");
+
     } finally {
       blink.shutdown();
     }

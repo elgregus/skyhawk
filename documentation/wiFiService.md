@@ -5,19 +5,9 @@ The WiFi service is used to manage the WiFi connections.
 
 This implementation does not handles errors. See [services](services.md) to learn how to implement error handling in this wrapper.
 
-### Instantiation
-
-~~~~{.java}
-String host = "localhost";
-int port = 50051;
-
-final MannagedChannel channel = ManagedChannelBuilder.forAddress(host, port).usePlaintext(true).build();
-final BLink_WiFi wifiService =  = new BLink_WiFi(channel);
-~~~~
-
 ---------------------------------
 
-### Methods
+### Java Methods
 
 #### java.util.List<AccessPoint> GetAccessPoints():
 
@@ -48,7 +38,7 @@ Throws StatusRuntimeException.
 
 #### void AddConnection(String id, String ssid, String psk, Boolean persistent):
 
-The AddConnection method is used to add a connection to the connection list.
+The AddConnection method is used to add a connection to the connection list.<br>
 Throws StatusRuntimeException.
 
 - param  :
@@ -59,7 +49,9 @@ Throws StatusRuntimeException.
 - return : None
 
 ####void AutoConnect(Boolean value):
-The AutoConnect method is used to tell the WiFi if we want to automatically connect to a connection when not connected.
+The AutoConnect method is used to tell the WiFi if we want to automatically connect to a connection when not connected.<br>
+Throws StatusRuntimeException.
+
 - param  :
          + Boolean value : Enable auto connect (true) or disable auto connect (false).
 - return : None
@@ -84,57 +76,86 @@ The AutoConnect method is used to tell the WiFi if we want to automatically conn
 
 ---------------------------------
 
-### Constants
-
-#### 
-
----------------------------------
-
 ### Example
 
 This is a short example only covering the basic operations.<br>
-For a more robust and detailed implementation, go see the example project file BLink_WiFi_example.java
+To see how to implement the gRPC calls directly, go see the example file BLink_WiFi.java
 
 ~~~~{.java}
+package blinkDemo;
+
+import static io.grpc.stub.ClientCalls.asyncServerStreamingCall;
+
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import blink_grpc.BLink;
+import blink_grpc.Connection;
+import blink_grpc.SerialPort_Read_Reply;
+import blink_grpc.SerialPort_Read_Request;
+import blink_grpc.SerialPort_ServiceGrpc;
+import blink_grpc.Wifi_Connect_Request;
+import blink_grpc.Wifi_SetAutoConnect_Request;
+import blink_grpc.SerialPort_ServiceGrpc.SerialPort_ServiceBlockingStub;
+import blink_grpc.SerialPort_ServiceGrpc.SerialPort_ServiceStub;
+import blink_grpc.SerialPort_Write_Request;
+import blink_grpc.Wifi_GetAccessPoints_Reply.AccessPoint;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
+import io.grpc.stub.StreamObserver;
 
 public class BLink_WiFi_example {
 
-  String host = "localhost";
-  int port = 50051;
+  private final ManagedChannel channel;
+  private final BLink_WiFi wifiService;
 
-  public void testGPIO() {
-    final MannagedChannel channel = ManagedChannelBuilder.forAddress(host, port).usePlaintext(true).build();
-    final BLink_WiFi wifiService =  = new BLink_WiFi(channel);
-    
-	try {
+  private static final Logger logger = Logger.getLogger(BLink_SkyHawkPowerManager_example.class.getName());
+
+  // Construct client connecting to BLink server
+  public BLink_WiFi_example(String host, int port) {
+    this(ManagedChannelBuilder.forAddress(host, port)
+        // Channels are secure by default (via SSL/TLS). For the example we disable TLS to avoid
+        // needing certificates.
+        .usePlaintext(true).build());
+  }
+
+  // Construct client for accessing GPIO service using the existing channel.
+  public BLink_WiFi_example(ManagedChannel channel) {
+    this.channel = channel;
+    this.wifiService = new BLink_WiFi(channel);
+  }
+
+  public void shutdown() throws InterruptedException {
+    channel.shutdown().awaitTermination(5, TimeUnit.SECONDS);
+  }
+
+  public static void main(String[] args) throws Exception {
+    final BLink_WiFi_example blink = new BLink_WiFi_example("localhost", 50051);
+    try {
+      
       // WiFi Example
-      java.util.List<AccessPoint> accessPoints = wifiService.GetAccessPoints();
+      java.util.List<AccessPoint> accessPoints = blink.wifiService.GetAccessPoints();
       for (AccessPoint item : accessPoints) {
         logger.info("SSID: " + item.getSsid() + " Signal: " + item.getSignalQuality() + "%");
       }
       
       // Connect to a WiFi access point
-      wifiService.AddConnection("test", "ssid", "psk134567234", false);
-      wifiService.Connect("brio");     
-      wifiService.AutoConnect(true); // optional, use to re-connect when signal is temporarily lost
+      blink.wifiService.AddConnection("test", "ssid", "psk134567234", false);
+      blink.wifiService.Connect("test");     
+      blink.wifiService.AutoConnect(true); // optional, use to re-connect when signal is temporarily lost
       
       // Print current WiFi connections
-      java.util.List<Connection> wifiConnections = wifiService.GetConnections();
+      java.util.List<Connection> wifiConnections = blink.wifiService.GetConnections();
       for (Connection item : wifiConnections) {
           logger.info("ID: " + item.getId() + " " + item.getUuid());
       }
 			
     } finally {
-      channel.shutdown().awaitTermination(5, TimeUnit.SECONDS);
+      blink.shutdown();
     }
   }
 }
+
 ~~~~
 
 ---------------------------------

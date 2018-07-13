@@ -7,39 +7,35 @@ The methods described and the example below will make direct use of gRPC calls.
 
 This implementation does not handles errors. See [services](services.md) to learn how to implement error handling in this wrapper.
 
-### Instantiation
+---------------------------------
 
-~~~~{.java}
-String host = "localhost";
-int port = 50051;
+### Skyhawk Capabilities
+Here is a list of capabilites for each configuration field
 
-/** Construct client connecting to BLink server at {@code host:port}. */
-  public BLink_SerialPort_example(String host, int port) {
-    this(ManagedChannelBuilder.forAddress(host, port)
-        // Channels are secure by default (via SSL/TLS). For the example we disable TLS to avoid
-        // needing certificates.
-        .usePlaintext(true).build());
-  }
+Field          | Type    | Values                                      
+---------------|-------- | --------------------------------------------
+Name           | String  | "BaseSerial" : DB9 connector <br> "MezzSerial" : Mezz connector                              
+Baudrate       | int     | Any int                                      
+Parity         | String  | "none", "odd", "even"                        
+Character Size | int     | 5 to 9
+Flow Control   | String  | "none", "software", "hardware"
+Stop Bits      | String  | "one", "onepointfive", "two"
 
-  /** Construct client for accessing serialport service using the existing channel. */
-  public BLink_SerialPort_example(ManagedChannel channel) {
-    this.channel = channel;
-  }
+#### Default Configurations
 
-  public void shutdown() throws InterruptedException {
-    channel.shutdown().awaitTermination(5, TimeUnit.SECONDS);
-  }
-
-final BLink_SerialPort_example blink = new BLink_SerialPort_example(host, port);
-~~~~
+**Baudrate :** 115200
+**Parity :** none
+**Character size :** 8
+**Flow control :** none
+**Stop bits :** one
 
 ---------------------------------
 
-### Methods
+### Java Methods
 
 Since gRPC always uses a system of request and reply, to simplify this documentation paramters in the request object have simply been tagged as param and return values in the reply object have been tagged as return values.
 
-#### uint64 Serial_Read():
+#### void Serial_Read():
 
 The Read method is used to read on the serial port of the device.
 It will create a stream of data that can be accessed in the : "onNext" callback.
@@ -60,13 +56,12 @@ Writes the bytes to the requested serial device. Bytes must be in UTF-8.
 		 + bytes data : All the bytes that we want to write.
 - return : None
 
-#### void Serial_Config(String deviceName, String devicePath, int baudrate, String parity, int charSize, String stopBits, String flowControl)
+#### void Serial_Config(String deviceName, int baudrate, String parity, int charSize, String stopBits, String flowControl)
 
 The Config method is used to configure a serial port on the device.
 
 - param : 
         + String deviceName : Name of the device we want to configure.
-        + String devicePath : Path to the device we want to configure.
 		+ int baudrate : Baudrate of the device we want to configure.
 		+ String parity : Parity of the device we want to configure.
 		+ int charSize : Character size of the device we want to configure.
@@ -82,35 +77,10 @@ Sends a command to stop a stream of reading on a specified serial device.
          + String devince Name : Name of the device we want to stop reading from.
 - return : None
 
----------------------------------
-
-### Constants
-
-#### Skyhawk Capabilities
-Here is a list of capabilites for each configuration field
-
-Field          | Type    | Values                                      
----------------|-------- | --------------------------------------------
-Name           | String  | "BaseSerial" : DB9 connector <br> "MezzSerial" : Mezz connector
-Path           | String  | Any valid path                                
-Baudrate       | int     | Any int                                      
-Parity         | String  | "none", "odd", "even"                        
-Character Size | int     | 5 to 9
-Flow Control   | String  | "none", "software", "hardware"
-Stop Bits      | String  | "one", "onepointfive", "two"
-
-#### Default Configurations
-
-**Path :** /dev/ttymxc1
-**Baudrate :** 115200
-**Parity :** none
-**Character size :** 8
-**Flow control :** none
-**Stop bits :** one
 
 ---------------------------------
 
-### Example
+### Java Example
 
 This is a short example only covering the basic operations.<br>
 To run this example, plug a RS232 cable on your target and execute BLink_SerialPort_example.jar-jar-with-dependencies.jar.
@@ -182,14 +152,13 @@ public class BLink_SerialPort_example {
 				SerialPort_Config_Request configRequest = SerialPort_Config_Request.newBuilder().setDeviceName("BaseSerial")
 						.setBaudrate(9600)
 						.setCharSize(8)
-						.setDevicePath("/dev/ttymxc1")
 						.setFlowControl("none")
 						.setParity("none")
 						.setStopBits("one")
 						.build();
 				blink.serialWriteStub.serialPortConfig(configRequest);
 			} else if(value.getData().toStringUtf8().equals("q")) {
-				SerialPort_StopReading_Request stopReadingRequest = SerialPort_StopReading_Request.newBuilder().setDeviceName("RS232")
+				SerialPort_StopReading_Request stopReadingRequest = SerialPort_StopReading_Request.newBuilder().setDeviceName("BaseSerial")
 					.build();
 				blink.serialWriteStub.serialPortStopReading(stopReadingRequest);
 				// onNext will not be called after stopping, exit gracefully
@@ -204,6 +173,8 @@ public class BLink_SerialPort_example {
 		}
 
 		public void onCompleted() {
+		    System.out.println("COMPLETED");
+			System.exit(0);
 			// TODO Auto-generated method stub
 		}
 		

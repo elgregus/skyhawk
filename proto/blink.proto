@@ -1,4 +1,4 @@
-// BLink Protocol v0.03
+// BLink Protocol v0.06
 
 syntax = "proto3";
 
@@ -17,6 +17,8 @@ message Error {
 service Gpio_Service {
     rpc Gpio_Set (Gpio_Set_Request) returns (Gpio_Set_Reply) {}
     rpc Gpio_Get (Gpio_Get_Request) returns (Gpio_Get_Reply) {}
+    rpc Gpio_StartStreaming (Gpio_StartStreaming_Request) returns (stream Gpio_StartStreaming_Reply) {}
+    rpc Gpio_StopStreaming (Gpio_StopStreaming_Request) returns (Gpio_StopStreaming_Reply) {}
 }
 
 message Gpio_Set_Request {
@@ -34,6 +36,23 @@ message Gpio_Get_Request {
 
 message Gpio_Get_Reply {
     bool value = 1;
+    Error error = 2;
+}
+
+message Gpio_StartStreaming_Request {
+    string name  = 1;
+    string edge = 2;
+}
+
+message Gpio_StartStreaming_Reply {
+    bool value = 1;
+}
+
+message Gpio_StopStreaming_Request {
+    string name  = 1;
+}
+
+message Gpio_StopStreaming_Reply {
     Error error = 2;
 }
 
@@ -143,17 +162,96 @@ message SerialPort_StopReading_Reply {
 
 message SerialPort_Config_Request {  
     string deviceName  = 1;
-    string devicePath  = 2;  
-    int32  baudrate    = 3;
-    string parity	   = 4;
-    int32  charSize    = 5;
-    string flowControl = 7;
-    string stopBits	   = 6;
+    int32  baudrate    = 2;
+    string parity      = 3;
+    int32  charSize    = 4;
+    string flowControl = 5;
+    string stopBits    = 6;
 }
 
 message SerialPort_Config_Reply {    
     Error error = 1;
 }
+
+// ======== Modem Protocol ========
+service Modem_Service {
+    rpc Modem_GetStatus(Modem_GetStatus_Request) returns (Modem_GetStatus_Reply) {}
+    rpc Modem_SetAPN(Modem_SetAPN_Request) returns (Modem_SetAPN_Reply) {}
+    rpc Modem_GetAPN(Modem_GetAPN_Request) returns (Modem_GetAPN_Reply) {}
+    rpc Modem_SetRadioPower(Modem_SetRadioPower_Request) returns (Modem_SetRadioPower_Reply) {}
+    rpc Modem_Connect(Modem_Connect_Request) returns (Modem_Connect_Reply) {}
+    rpc Modem_Disconnect(Modem_Disconnect_Request) returns (Modem_Disconnect_Reply) {}
+
+    // Not implemented yet
+    rpc Modem_GetInfo(Modem_GetInfo_Request) returns (Modem_GetInfo_Reply) {}
+    rpc Modem_GetSignalInfo(Modem_GetSignalInfo_Request) returns (Modem_GetSignalInfo_Reply) {}
+    rpc Modem_SendSMS(Modem_SendSMS_Request) returns (Modem_SendSMS_Reply) {}
+    rpc Modem_Update(Modem_Update_Request) returns (Modem_Update_Reply) {}
+
+}
+
+message Modem_GetStatus_Request {
+}
+
+message Modem_GetStatus_Reply {
+}
+
+message Modem_GetInfo_Request {
+}
+
+message Modem_GetInfo_Reply {
+}
+
+message Modem_SetAPN_Request {
+    string apn = 1;
+}
+
+message Modem_SetAPN_Reply {
+}
+
+message Modem_GetAPN_Request {
+}
+
+message Modem_GetAPN_Reply {
+    string apn = 1;
+}
+
+message Modem_GetSignalInfo_Request {
+}
+
+message Modem_GetSignalInfo_Reply {
+}
+
+message Modem_SetRadioPower_Request {
+}
+
+message Modem_SetRadioPower_Reply {
+}
+
+message Modem_SendSMS_Request {
+}
+
+message Modem_SendSMS_Reply {
+}
+
+message Modem_Update_Request {
+}
+
+message Modem_Update_Reply {
+}
+
+message Modem_Connect_Request {
+}
+
+message Modem_Connect_Reply {
+}
+
+message Modem_Disconnect_Request {
+}
+
+message Modem_Disconnect_Reply {
+}
+
 
 // ======== Network.Wifi Protocol ========
 service Wifi_Service {
@@ -242,5 +340,61 @@ message RTC_SetTime_Request {
 }
 
 message RTC_SetTime_Reply {
+    Error error = 1;
+}
+
+// ======== Accelerometer Protocol ========
+service Accelerometer_Service {
+    rpc Accelerometer_Start (Accelerometer_Start_Request) returns (Accelerometer_Start_Reply) {}
+    rpc Accelerometer_Stop (Accelerometer_Stop_Request) returns (Accelerometer_Stop_Reply) {}
+    rpc Accelerometer_Get_Samples (Accelerometer_Get_Samples_Request) returns (Accelerometer_Get_Samples_Reply) {}
+}
+
+message Accelerometer_Start_Request {
+    int32 dataRate = 1;
+    int32 axisRange = 2;
+}
+
+message Accelerometer_Start_Reply {
+    Error error = 1;
+}
+
+message Accelerometer_Stop_Request {
+}
+
+message Accelerometer_Stop_Reply {
+}
+
+message Accelerometer_Get_Samples_Request {
+}
+
+message Accelerometer_Get_Samples_Reply {
+    repeated double xAxis = 1;
+    repeated double yAxis = 2;
+    repeated double zAxis = 3;
+    Error error = 4;
+}
+
+
+// ======== Wiegand Protocol ========
+service Wiegand_Service {
+    rpc Wiegand_Read(Wiegand_Read_Request) returns (stream Wiegand_Read_Reply) {}
+    rpc Wiegand_StopReading(Wiegand_StopReading_Request) returns (Wiegand_StopReading_Reply) {}
+}
+
+message Wiegand_Read_Request {
+    string deviceName = 1;
+}
+
+message Wiegand_Read_Reply {    
+    int64 data = 1;
+    Error error = 2;
+}
+
+message Wiegand_StopReading_Request {
+    string deviceName = 1;
+}
+
+message Wiegand_StopReading_Reply {
     Error error = 1;
 }

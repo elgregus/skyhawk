@@ -31,6 +31,25 @@
 			</extension>
 		</extensions>
 		<plugins>
+		    <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.7</version>
+                <executions>
+                    <execution>
+                        <id>copy</id>
+                        <phase>validate</phase>
+                        <configuration>
+                            <target name="copy file">
+                                <copy file="..\..\..\..\proto\blink.proto" tofile="src\main\proto\blink.proto" />
+                            </target>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
 			<plugin>
 				<groupId>org.xolstice.maven.plugins</groupId>
 				<artifactId>protobuf-maven-plugin</artifactId>
@@ -142,6 +161,42 @@
 	          				<goal>single</goal>
 	        			</goals>
 	      			</execution>
+	      			<execution>
+	        			<id>Wiegand-make-jar-with-dependencies</id>
+	        			<phase>package</phase>
+	        			<configuration>
+					      <archive>
+						    <manifest>
+							  <mainClass>blinkDemo.BLink_Wiegand_example</mainClass>
+						    </manifest>
+					      </archive>
+					      <descriptorRefs>
+						    <descriptorRef>jar-with-dependencies</descriptorRef>
+					      </descriptorRefs>
+					      <finalName>BLink_Wiegand_example.jar</finalName>
+				        </configuration>
+	        			<goals>
+	          				<goal>single</goal>
+	        			</goals>
+	      			</execution>
+					<execution>
+						<id>Accelerometer-make-jar-with-dependencies</id>
+						<phase>package</phase>
+						<configuration>
+							<archive>
+							<manifest>
+								<mainClass>blinkDemo.BLink_Accelerometer_example</mainClass>
+							</manifest>
+							</archive>
+							<descriptorRefs>
+							<descriptorRef>jar-with-dependencies</descriptorRef>
+							</descriptorRefs>
+							<finalName>BLink_Accelerometer_example.jar</finalName>
+						</configuration>
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
 	    		</executions>
 			</plugin>
 		</plugins>

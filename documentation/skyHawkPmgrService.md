@@ -5,75 +5,11 @@ The SkyHawkPowerManager service is used to get and set registers in the LPM, it 
 
 This implementation does not handles errors. See [services](services.md) to learn how to implement error handling in this wrapper.
 
-### Instantiation
-
-~~~~{.java}
-String host = "localhost";
-int port = 50051;
-
-final MannagedChannel channel = ManagedChannelBuilder.forAddress(host, port).usePlaintext(true).build();
-final BLink_SkyHawkPowerManager skyHawkPowerManagerService =  = new BLink_SkyHawkPowerManager(channel);
-~~~~
-
 ---------------------------------
 
-### Methods
+## Registers
 
-Do not forget that every methods always returns the error structure in addition to any other return value.
-
-#### void setRegister(String regName, int value):
-
-The setRegister method is used to set a specific Register in the LPM.<br>
-To see a complete list of all available registers and accepted values, see section constants below.
-
-- param  : 
-         + String name   : Name of the Register we want to switch the state.
-         + int value     : Value you want to set the register to.
-- return : None
-  
-#### int getRegister(String regName):
-
-The getRegister method is used to get a specific Register in the LPM.<br>
-To see a complete list of all available registers and accepted values, see section constants below.
-
-- param  : 
-         + String name   : Name of the Register we want to get the state.		  
-- return : 
-         + int : Value of the register.
-
-#### bool updateFW(String filePath):
-
-The updateFw method is used to update the firmware in the LPM.<br>
-This call is quite long (can take up to 10 minutes) so it should be called in its own thread.
-
-- param  : 
-         + String filePath   : Path of the new .bin file to update the firmware with.
-- return : 
-         + Boolean : true for success, false for failure.
-
-#### String getFWVersion():
-
-The getFWVersion method is used to get the actual firmware version in the LPM.
-
-- param  : None
-- return : 
-         + String : The string contains the firmware version, is maximum 30 characters long and is formatted as follow "0.00.000.00"
-
-#### int getHWVersion():
-
-The getHWVersion method is used to get the actual hardware version of the board.
-
-- param  : None
-- return : 
-         + int : The hardware version number
-
----------------------------------
-
-### Constants
-
-#### Registers:
-
-Here is the list of all Registers you can pass as parameters for the get and set methods.
+Here is the list of all registers you can pass as parameters for the get and set methods.
 
 Name                 | Possible values | Default Value | Access | Description
 -------------------- | --------------- | ------------- | ------ | -----------
@@ -156,7 +92,62 @@ IRQ_STATUS_CPUSHDN    | 0 or 1          | 0             | RO | LPM request a CPU
 [comment]: <> (FW_UPDT_STS_VALIDATE | 00 : Idle<br>01 : Command in progress<br>10 : Command failed<br>11 : Command succed | 0 | RO | Read validate command status (cleared on read).<br>Fail reason: Application CRC doesn't match with the VALIDATE<br>command payload.)
 [comment]: <> (FW_UPDT_STS_REBOOT   | 00 : Idle<br>01 : Command in progress<br>10 : Command failed<br>11 : Command succed | 0 | RO | Read reboot command status (cleared on read).<br>)
 
-### Example
+---------------------------------
+
+### Java Methods
+
+Do not forget that every methods always returns the error structure in addition to any other return value.
+
+#### void setRegister(String regName, int value):
+
+The setRegister method is used to set a specific Register in the LPM.<br>
+To see a complete list of all available registers and accepted values, see section constants below.
+
+- param  : 
+         + String name   : Name of the Register we want to switch the state.
+         + int value     : Value you want to set the register to.
+- return : None
+  
+#### int getRegister(String regName):
+
+The getRegister method is used to get a specific Register in the LPM.<br>
+To see a complete list of all available registers and accepted values, see section constants below.
+
+- param  : 
+         + String name   : Name of the Register we want to get the state.		  
+- return : 
+         + int : Value of the register.
+
+#### bool updateFW(String filePath):
+
+The updateFw method is used to update the firmware in the LPM.<br>
+This call is quite long (can take up to 10 minutes) so it should be called in its own thread.
+
+- param  : 
+         + String filePath   : Path of the new .bin file to update the firmware with.
+- return : 
+         + Boolean : true for success, false for failure.
+
+#### String getFWVersion():
+
+The getFWVersion method is used to get the actual firmware version in the LPM.
+
+- param  : None
+- return : 
+         + String : The string contains the firmware version, is maximum 30 characters long and is formatted as follow "0.00.000.00"
+
+#### int getHWVersion():
+
+The getHWVersion method is used to get the actual hardware version of the board.
+
+- param  : None
+- return : 
+         + int : The hardware version number
+
+
+---------------------------------
+
+### Java Example
 This is a short example only covering the basic operations.<br>
 For a more robust and detailed implementation, go see the example project file BLink_SkyHawkPowerManager_example.java
 ~~~~{.java}
