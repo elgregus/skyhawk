@@ -36,12 +36,6 @@ public class BLink_Accelerometer {
             logger.log(Level.WARNING, "RPC failed " + e.getStatus() + " " + e.getMessage());
             return;
         }
-
-        if(response.getError().getErrorCode() != 0) {
-            logger.log(Level.WARNING, "Accelerometer FAILED errno : " +
-                    response.getError().getErrorCode() + " " +
-                    response.getError().getErrorMessage());
-        }
     }
 
     /** Stop accelerometer */
@@ -68,12 +62,6 @@ public class BLink_Accelerometer {
         } catch (StatusRuntimeException e) {
             logger.log(Level.WARNING, "RPC failed " + e.getStatus() + " " + e.getMessage());
             throw e;
-        }
-
-        if(response.getError().getErrorCode() != 0) {
-            logger.log(Level.WARNING, "Accelerometer FAILED errno : " +
-                    response.getError().getErrorCode() + " " +
-                    response.getError().getErrorMessage());
         }
 
         java.util.List<Double> x = response.getXAxisList();
