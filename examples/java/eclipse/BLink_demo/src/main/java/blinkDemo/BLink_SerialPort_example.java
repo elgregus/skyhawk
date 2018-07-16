@@ -53,7 +53,7 @@ public class BLink_SerialPort_example {
       // Serial Port Example (Echo of RX:ttymxc1 into TX:ttymxc1)
       blink.serialReadStub = SerialPort_ServiceGrpc.newStub(blink.channel);
       blink.serialWriteStub = SerialPort_ServiceGrpc.newBlockingStub(blink.channel);     
-      SerialPort_Read_Request readRequest = SerialPort_Read_Request.newBuilder().setDeviceName("MezzSerial").build();
+      SerialPort_Read_Request readRequest = SerialPort_Read_Request.newBuilder().setDeviceName("MezzSerial").setMode("RS485").build();
       
       blink.serialReadStub.serialPortRead(readRequest, new StreamObserver<blink_grpc.SerialPort_Read_Reply>() {
 		public void onNext(SerialPort_Read_Reply value) {

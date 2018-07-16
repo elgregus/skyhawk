@@ -35,7 +35,7 @@ Stop Bits      | String  | "one", "onepointfive", "two"
 
 Since gRPC always uses a system of request and reply, to simplify this documentation paramters in the request object have simply been tagged as param and return values in the reply object have been tagged as return values.
 
-#### void Serial_Read():
+#### void Serial_Read(String deviceName, String mode):
 
 The Read method is used to read on the serial port of the device.
 It will create a stream of data that can be accessed in the : "onNext" callback.
@@ -45,15 +45,17 @@ See at the end of this page for a complete example.
 
 - param  :
          + String deviceName : Name of the device we want to read from.
+         + String mode : Mode to use with the specified device (ex: "RS232" or "RS485"). This parameter is optionnal if the specified device offers only a single mode.
 - return : None
 		 
-#### void Serial_Write(String deviceName, bytes data):
+#### void Serial_Write(String deviceName, bytes data, String mode):
 
 Writes the bytes to the requested serial device. Bytes must be in UTF-8.
 
 - param  : 
          + String deviceName : Name of the device we want to write to.
 		 + bytes data : All the bytes that we want to write.
+         + String mode : Mode to use with the specified device (ex: "RS232" or "RS485"). This parameter is optionnal if the specified device offers only a single mode.
 - return : None
 
 #### void Serial_Config(String deviceName, int baudrate, String parity, int charSize, String stopBits, String flowControl)
@@ -141,8 +143,10 @@ public class BLink_SerialPort_example {
     
       // Serial Port Example (Echo of RX:ttymxc1 into TX:ttymxc1)
       blink.serialReadStub = SerialPort_ServiceGrpc.newStub(blink.channel);
-      blink.serialWriteStub = SerialPort_ServiceGrpc.newBlockingStub(blink.channel);     
-      SerialPort_Read_Request readRequest = SerialPort_Read_Request.newBuilder().setDeviceName("BaseSerial").build();
+      blink.serialWriteStub = SerialPort_ServiceGrpc.newBlockingStub(blink.channel);
+      
+      // We set a mode in this read but its optionnal because baseboard supports only RS232.
+      SerialPort_Read_Request readRequest = SerialPort_Read_Request.newBuilder().setDeviceName("BaseSerial").setMode("RS232").build();
       
       blink.serialReadStub.serialPortRead(readRequest, new StreamObserver<blink_grpc.SerialPort_Read_Reply>() {
 		public void onNext(SerialPort_Read_Reply value) {
@@ -163,7 +167,9 @@ public class BLink_SerialPort_example {
 				blink.serialWriteStub.serialPortStopReading(stopReadingRequest);
 				// onNext will not be called after stopping, exit gracefully
 			} else {
-				SerialPort_Write_Request writeRequest = SerialPort_Write_Request.newBuilder().setDeviceName("BaseSerial").setData(value.getData()).build();
+                // We do not set a mode in the write but it still works because baseboard supports only RS232.
+				SerialPort_Write_Request writeRequest = SerialPort_Write_Request.newBuilder().setDeviceName("BaseSerial").setData(value.getData())
+                    .build();
 				blink.serialWriteStub.serialPortWrite(writeRequest);
 			}
 		}
