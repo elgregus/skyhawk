@@ -39,7 +39,7 @@ public class BLink_RTC_example {
     
       long time = blink.RTCService.GetTime();
       
-      logger.log(Level.INFO, "Network State: " + time);
+      logger.log(Level.INFO, "Time is : " + time);
       
     } finally {
       blink.shutdown();
