@@ -2,6 +2,10 @@ package blinkDemo;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
 import blink_grpc.Gpio_Get_Reply;
 import blink_grpc.Gpio_Get_Request;
 import blink_grpc.Gpio_ServiceGrpc;
@@ -39,14 +43,18 @@ public class BLink_GPIO {
         try {
         	response = blockingStub.gpioSet(request);
         } catch (StatusRuntimeException e) {
-            logger.log(Level.WARNING, "RPC failed " + e.getStatus() + " " + e.getMessage());
+            logger.log(Level.WARNING, "RPC failed " + e.getStatus().getDescription() + " " + e.getMessage());
+
+            // Get the description
+            JsonParser parser = new JsonParser();
+            JsonObject jsonDescription = parser.parse(e.getStatus().getDescription()).getAsJsonObject();
+            
+            //Convert to int and string
+            int errorCode = jsonDescription.get("errorCode").getAsInt();
+            String errorMessage = jsonDescription.get("errorMessage").getAsString();
+            
+            System.out.println(Integer.toString(errorCode) + " : " + errorMessage);
             return;
-        }
-        
-        if(response.getError().getErrorCode() != 0) {
-        	logger.log(Level.WARNING, "GPIO FAILED errno : " + 
-                    response.getError().getErrorCode() + " " + 
-        			response.getError().getErrorMessage());
         }
     }
 
@@ -62,13 +70,7 @@ public class BLink_GPIO {
             logger.log(Level.WARNING, "RPC failed " + e.getStatus() + " " + e.getMessage());
             throw e;
         }
-        
-        if(response.getError().getErrorCode() != 0) {
-        	logger.log(Level.WARNING, "GPIO FAILED errno : " + 
-                    response.getError().getErrorCode() + " " + 
-        			response.getError().getErrorMessage());
-        }
-        
+
         return response.getValue();
     }
 
@@ -105,12 +107,6 @@ public class BLink_GPIO {
         } catch (StatusRuntimeException e) {
             logger.log(Level.WARNING, "RPC failed " + e.getStatus() + " " + e.getMessage());
             throw e;
-        }
-
-        if(response.getError().getErrorCode() != 0) {
-            logger.log(Level.WARNING, "GPIO FAILED errno : " +
-                response.getError().getErrorCode() + " " +
-                response.getError().getErrorMessage());
         }
     }
 }
