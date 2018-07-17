@@ -369,3 +369,80 @@ message Wiegand_StopReading_Request {
 
 message Wiegand_StopReading_Reply {
 }
+
+
+// ======== SkyhawkMisc Protocol ========
+service SkyhawkMisc_Service {
+    rpc WiegandEN_OneWireDIS_Set(WiegandEN_OneWireDIS_Set_Request) returns (WiegandEN_OneWireDIS_Set_Reply) {}
+    rpc WiegandEN_OneWireDIS_Get(WiegandEN_OneWireDIS_Get_Request) returns (WiegandEN_OneWireDIS_Get_Reply) {}
+    rpc WWANAntennaEN_Set(WWANAntennaEN_Set_Request) returns (WWANAntennaEN_Set_Reply) {}
+    rpc WWANAntennaEN_Get(WWANAntennaEN_Get_Request) returns (WWANAntennaEN_Get_Reply) {}
+    rpc PoEEN_Set(PoEEN_Set_Request) returns (PoEEN_Set_Reply) {}
+    rpc PoEEN_Get(PoEEN_Get_Request) returns (PoEEN_Get_Reply) {}
+    rpc MezzSerialMode_Set(MezzSerialMode_Set_Request) returns (MezzSerialMode_Set_Reply) {}
+    rpc MezzSerialMode_Get(MezzSerialMode_Get_Request) returns (MezzSerialMode_Get_Reply) {}
+    rpc DetectMezz(DetectMezz_Request) returns (DetectMezz_Reply) {}
+}
+
+message WiegandEN_OneWireDIS_Set_Request {
+    bool requestedState = 1;
+}
+
+message WiegandEN_OneWireDIS_Set_Reply {
+}
+
+message WiegandEN_OneWireDIS_Get_Request {
+}
+
+message WiegandEN_OneWireDIS_Get_Reply {
+    bool value = 1;
+}
+
+message WWANAntennaEN_Set_Request {
+    bool requestedState = 1;
+}
+
+message WWANAntennaEN_Set_Reply {
+}
+
+message WWANAntennaEN_Get_Request {
+}
+
+message WWANAntennaEN_Get_Reply {
+    bool value = 1;
+}
+
+message PoEEN_Set_Request {
+    bool requestedState = 1;
+}
+
+message PoEEN_Set_Reply {
+}
+
+message PoEEN_Get_Request {
+}
+
+message PoEEN_Get_Reply {
+    bool value = 1;
+}
+
+message MezzSerialMode_Set_Request {
+    string mode = 1;
+}
+
+message MezzSerialMode_Set_Reply {
+}
+
+message MezzSerialMode_Get_Request {
+}
+
+message MezzSerialMode_Get_Reply {
+    string value = 1;
+}
+
+message DetectMezz_Request {
+}
+
+message DetectMezz_Reply {
+    bool value = 1;
+}
