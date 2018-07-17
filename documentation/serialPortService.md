@@ -1,7 +1,7 @@
 Serial Port Service
 ============
 
-The Serial Port Service is used communicate with the serial port on the device. you may write or read on this serial port. Configuration is optional, since the server automatically does a default configuration.
+The Serial Port Service is used to communicate with the serial port on the device. you may write or read on this serial port. Configuration is optional, since the server automatically does a default configuration.
 
 The methods described and the example below will make direct use of gRPC calls.
 
