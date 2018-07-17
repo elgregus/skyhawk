@@ -61,7 +61,7 @@ public class BLink_SkyHawkMisc_example {
       DetectMezz_Request detectMezzRequest = DetectMezz_Request.newBuilder().build();
       DetectMezz_Reply detectMezzResponse = blink.skyhawkMiscStub.detectMezz(detectMezzRequest);
       
-      // Enable Wiegand, Disable PoE, Set Mezz to RS485.
+      // Enable Wiegand, Disable PoE, Set Mezz to RS232.
       if (!detectMezzResponse.getValue()) {
     	MezzSerialMode_Get_Request getSerialRequest = MezzSerialMode_Get_Request.newBuilder().build();
     	MezzSerialMode_Get_Reply getSerialReply = blink.skyhawkMiscStub.mezzSerialModeGet(getSerialRequest);
