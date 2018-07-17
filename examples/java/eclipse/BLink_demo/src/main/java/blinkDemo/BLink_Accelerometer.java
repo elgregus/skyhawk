@@ -67,6 +67,7 @@ public class BLink_Accelerometer {
         java.util.List<Double> x = response.getXAxisList();
         java.util.List<Double> y = response.getYAxisList();
         java.util.List<Double> z = response.getZAxisList();
-        return new java.util.List[] { x, y, z };
+        java.util.List<Long> timestamp = response.getTimestampList();
+        return new java.util.List[] { x, y, z, timestamp };
     }
 }

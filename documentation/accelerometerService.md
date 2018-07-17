@@ -16,10 +16,11 @@ TODO:
 ####java.util.List[] getSamples():
 The getSamples method is used to get available sample. <br>
 This service is designed to buf data for 1 sec. After this delay, the first sample is removed to save the new one.<br>
+Acceleration is given in g and the timestamp is given in ms since last boot.<br>
 Note: start() must be called before getSamples().
 - param  : None
 - return :
-         + List[] data: { List<Double> x, List<Double> y, List<Double> z }
+         + List[] data: { List<Double> x, List<Double> y, List<Double> z, List<Long> timestamp }
 
 ####void start(int dataRate, int axisRange):
 The start method is used to start data acquisition with a given data rate and a range (ex: +/- 4g).<br>
