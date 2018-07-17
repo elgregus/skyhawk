@@ -52,13 +52,16 @@ public class BLink_Accelerometer_example {
               java.util.List<Double> x = samples[0];
               java.util.List<Double> y = samples[1];
               java.util.List<Double> z = samples[2];
+              java.util.List<Long> timestamp = samples[3];
 
               Double lastX = x.get(x.size() - 1);
               Double lastY = y.get(y.size() - 1);
               Double lastZ = z.get(z.size() - 1);
+              Long lastTimestamp = timestamp.get(timestamp.size() - 1);
 
-              logger.log(Level.INFO, "Count [x y z]: " + x.size() + " " + y.size() + " " + z.size());
-              logger.log(Level.INFO, "Last  [x y z]: " + lastX + " " + lastY + " " + lastZ);
+              logger.log(Level.INFO, "Count  [x y z]: " + x.size() + " " + y.size() + " " + z.size());
+              logger.log(Level.INFO, "Last   [x y z]: " + lastX + " " + lastY + " " + lastZ);
+              logger.log(Level.INFO, "Last Timestamp: " + lastTimestamp);
           }
       };
       Timer timer = new Timer();

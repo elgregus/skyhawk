@@ -346,6 +346,7 @@ message Accelerometer_Get_Samples_Reply {
     repeated double xAxis = 1;
     repeated double yAxis = 2;
     repeated double zAxis = 3;
+    repeated uint64 timestamp = 4;
 }
 
 
