@@ -39,11 +39,11 @@ Wiegand   | OneWire
 
 #### void WWANAntennaEN_Set(boolean requestedState):
 
-Toogle the WWANAntenna on/off.
+Toogle the WWANAntenna between internal and external antenna.
 
 True      | false
 --------- | ---------
-On        | Off
+external  | internal
 
 - param  :
          + boolean resquestedState : State you want the WWANAntenna to be.
@@ -55,7 +55,7 @@ Get the current state of the WWANAntenna.
 
 True      | false
 --------- | ---------
-On        | Off
+external  | internal
 
 - param  : None
 - return : 
