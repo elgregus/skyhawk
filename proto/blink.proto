@@ -320,26 +320,14 @@ message RTC_SetTime_Reply {
 
 // ======== Accelerometer Protocol ========
 service Accelerometer_Service {
-    rpc Accelerometer_Start (Accelerometer_Start_Request) returns (Accelerometer_Start_Reply) {}
-    rpc Accelerometer_Stop (Accelerometer_Stop_Request) returns (Accelerometer_Stop_Reply) {}
     rpc Accelerometer_Get_Samples (Accelerometer_Get_Samples_Request) returns (Accelerometer_Get_Samples_Reply) {}
-}
-
-message Accelerometer_Start_Request {
-    int32 dataRate = 1;
-    int32 axisRange = 2;
-}
-
-message Accelerometer_Start_Reply {
-}
-
-message Accelerometer_Stop_Request {
-}
-
-message Accelerometer_Stop_Reply {
-}
-
-message Accelerometer_Get_Samples_Request {
+    rpc Accelerometer_Set_Data_Rate(Accelerometer_Set_Data_Rate_Request) returns (Accelerometer_Set_Data_Rate_Reply) {}
+    rpc Accelerometer_Set_Range(Accelerometer_Set_Range_Request) returns (Accelerometer_Set_Range_Reply) {}
+    rpc Accelerometer_Set_Trigger(Accelerometer_Set_Trigger_Request) returns (Accelerometer_Set_Trigger_Reply) {}
+    rpc Accelerometer_Start_Monitoring (Accelerometer_Start_Monitoring_Request) returns (Accelerometer_Start_Monitoring_Reply) {}
+    rpc Accelerometer_Start_Trigger (Accelerometer_Start_Trigger_Request) returns (Accelerometer_Start_Trigger_Reply) {}
+    rpc Accelerometer_Stop_Monitoring (Accelerometer_Stop_Monitoring_Request) returns (Accelerometer_Stop_Monitoring_Reply) {}
+    rpc Accelerometer_Stop_Trigger (Accelerometer_Stop_Trigger_Request) returns (Accelerometer_Stop_Trigger_Reply) {}
 }
 
 message Accelerometer_Get_Samples_Reply {
@@ -349,6 +337,57 @@ message Accelerometer_Get_Samples_Reply {
     repeated uint64 timestamp = 4;
 }
 
+message Accelerometer_Get_Samples_Request {
+}
+
+message Accelerometer_Set_Data_Rate_Reply {
+}
+
+message Accelerometer_Set_Data_Rate_Request {
+    int32 dataRate = 1;
+}
+
+message Accelerometer_Set_Range_Reply {
+}
+
+message Accelerometer_Set_Range_Request {
+    int32 axisRange = 1;
+}
+
+message Accelerometer_Set_Trigger_Reply {
+}
+
+message Accelerometer_Set_Trigger_Request {
+    int32 thsX = 1;
+    int32 thsY = 2;
+    int32 thsZ = 3;
+    int32 dur = 4;
+    int32 conf = 5;
+}
+
+message Accelerometer_Start_Monitoring_Reply {
+}
+
+message Accelerometer_Start_Monitoring_Request {
+}
+
+message Accelerometer_Start_Trigger_Reply {
+}
+
+message Accelerometer_Start_Trigger_Request {
+}
+
+message Accelerometer_Stop_Monitoring_Reply {
+}
+
+message Accelerometer_Stop_Monitoring_Request {
+}
+
+message Accelerometer_Stop_Trigger_Reply {
+}
+
+message Accelerometer_Stop_Trigger_Request {
+}
 
 // ======== Wiegand Protocol ========
 service Wiegand_Service {
