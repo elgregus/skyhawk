@@ -411,6 +411,135 @@ message Wiegand_StopReading_Reply {
 }
 
 
+// ======== OneWire Protocol ========
+service OneWire_Service {
+    rpc OneWire_Write(OneWire_Write_Request) returns (OneWire_Write_Reply) {}
+    rpc OneWire_Triplet(OneWire_Triplet_Request) returns (OneWire_Triplet_Reply) {}
+    rpc OneWire_Read(OneWire_Read_Request) returns (OneWire_Read_Reply) {}
+    rpc OneWire_PowerOff(OneWire_PowerOff_Request) returns (OneWire_PowerOff_Reply) {}
+    rpc OneWire_PowerOn(OneWire_PowerOn_Request) returns (OneWire_PowerOn_Reply) {}
+    rpc OneWire_AdjustPort(OneWire_AdjustPort_Request) returns (OneWire_AdjustPort_Reply) {}
+    rpc OneWire_GetStatus(OneWire_GetStatus_Request) returns (OneWire_GetStatus_Reply) {}
+    rpc OneWire_SetOverdriveSpeed(OneWire_SetOverdriveSpeed_Request) returns (OneWire_SetOverdriveSpeed_Reply) {}
+    rpc OneWire_Reset(OneWire_Reset_Request) returns (OneWire_Reset_Reply) {}
+    rpc OneWire_SetRegister(OneWire_SetRegister_Request) returns (OneWire_SetRegister_Reply) {}
+    rpc OneWire_GetRegister(OneWire_GetRegister_Request) returns (OneWire_GetRegister_Reply) {}
+}
+
+message OneWire_Write_Request {
+    string deviceName = 1;
+    int32 data = 2;
+    string mode = 3;
+}
+
+message OneWire_Write_Reply {
+}
+
+message OneWire_Triplet_Request {
+    string deviceName = 1;
+    bool direction = 2;
+}
+
+message OneWire_Triplet_Reply {
+    bool power = 1;
+    bool overdrive = 2;
+    bool strongPullUp = 3;
+    bool activePullUp = 4;
+    bool pulseDetected = 5;
+    bool logicLevel = 6;
+    bool oneWireBusy = 7;
+    bool shortDetected = 8;
+    bool deviceReset = 9;
+    bool singleBitResult = 10;
+    bool tripletSecondBit = 11;
+    bool branchDir = 12;
+}
+
+message OneWire_Read_Request {
+    string deviceName = 1;
+    int32 numberOfBytes = 2;
+}
+
+message OneWire_Read_Reply {
+    repeated int32 data = 1;
+}
+
+message OneWire_PowerOff_Request {
+    string deviceName = 1;
+}
+
+message OneWire_PowerOff_Reply {
+}
+
+message OneWire_PowerOn_Request {
+    string deviceName = 1;
+}
+
+message OneWire_PowerOn_Reply {
+}
+
+message OneWire_AdjustPort_Request {
+    string deviceName = 1;
+    int32 data =2;
+}
+
+message OneWire_AdjustPort_Reply {
+    int32 value =1;
+}
+
+message OneWire_GetStatus_Request {
+    string deviceName = 1;
+}
+
+message OneWire_GetStatus_Reply {
+    bool power = 1;
+    bool overdrive = 2;
+    bool strongPullUp = 3;
+    bool activePullUp = 4;
+    bool pulseDetected = 5;
+    bool logicLevel = 6;
+    bool oneWireBusy = 7;
+    bool shortDetected = 8;
+    bool deviceReset = 9;
+    bool singleBitResult = 10;
+    bool tripletSecondBit = 11;
+    bool branchDir = 12;
+}
+
+message OneWire_SetOverdriveSpeed_Request {
+    string deviceName = 1;
+    bool overdrive = 2;
+}
+
+message OneWire_SetOverdriveSpeed_Reply {
+}
+
+message OneWire_Reset_Request {
+    string deviceName = 1;
+}
+
+message OneWire_Reset_Reply {
+}
+
+message OneWire_SetRegister_Request {
+    string deviceName = 1;
+    int32 reg = 2;
+    int32 data = 3;
+}
+
+message OneWire_SetRegister_Reply {
+}
+
+message OneWire_GetRegister_Request {
+    string deviceName = 1;
+    int32 reg = 2;
+}
+
+message OneWire_GetRegister_Reply {
+    int32 value = 1;
+}
+
+
 // ======== SkyhawkMisc Protocol ========
 service SkyhawkMisc_Service {
     rpc WiegandEN_OneWireDIS_Set(WiegandEN_OneWireDIS_Set_Request) returns (WiegandEN_OneWireDIS_Set_Reply) {}
