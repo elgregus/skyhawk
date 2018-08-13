@@ -2,4 +2,6 @@
 docClient/html/
 docClient/latex/
 examples/java/eclipse/BLink_demo/src/main/proto/blink.proto
+examples/python/generatedCode
+**/blink_pb2*
 /
