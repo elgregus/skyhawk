@@ -31,6 +31,7 @@ LEDBT               | Output    | Bluetooth led.
 LEDWIFI             | Output    | WiFi led.
 LEDDATA             | Output    | Data led.
 LEDGPS              | Output    | GPS led.
+LPMIRQ              | Input     | IRQ from the LPM to the CPU
 
 #### 
 

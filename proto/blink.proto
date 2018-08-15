@@ -1,4 +1,4 @@
-// BLink Protocol v0.06
+// BLink Protocol v0.08
 
 syntax = "proto3";
 
@@ -6,12 +6,6 @@ option java_multiple_files = true;
 option java_outer_classname = "BLink";
 
 package blink_grpc;
-
-// ======== Error Handling ========
-message Error {
-    int32 errorCode = 1;
-    string errorMessage = 2;
-} 
 
 // ======== Gpio Protocol ========
 service Gpio_Service {
@@ -27,7 +21,6 @@ message Gpio_Set_Request {
 }
 
 message Gpio_Set_Reply {
-    Error error = 1;
 }
 
 message Gpio_Get_Request {
@@ -36,7 +29,6 @@ message Gpio_Get_Request {
 
 message Gpio_Get_Reply {
     bool value = 1;
-    Error error = 2;
 }
 
 message Gpio_StartStreaming_Request {
@@ -53,7 +45,6 @@ message Gpio_StopStreaming_Request {
 }
 
 message Gpio_StopStreaming_Reply {
-    Error error = 2;
 }
 
 // ======== SkyHawkPowerManager Protocol ========
@@ -71,7 +62,6 @@ message SkyHawkPmgr_GetRegister_Request {
 
 message SkyHawkPmgr_GetRegister_Reply {
     int32 value = 1;
-    Error error = 2;
 }
 
 message SkyHawkPmgr_SetRegister_Request {
@@ -80,7 +70,6 @@ message SkyHawkPmgr_SetRegister_Request {
 }
 
 message SkyHawkPmgr_SetRegister_Reply {
-    Error error = 1;
 }
 
 message SkyHawkPmgr_UpdateFW_Request {
@@ -89,7 +78,6 @@ message SkyHawkPmgr_UpdateFW_Request {
 
 message SkyHawkPmgr_UpdateFW_Reply {
     bool success = 1;
-    Error error = 2;
 }
 
 message SkyHawkPmgr_GetFWVersion_Request {
@@ -97,7 +85,6 @@ message SkyHawkPmgr_GetFWVersion_Request {
 
 message SkyHawkPmgr_GetFWVersion_Reply {
     string fwVersion = 1;
-    Error error = 2;
 }
 
 message SkyHawkPmgr_GetHWVersion_Request {
@@ -105,7 +92,6 @@ message SkyHawkPmgr_GetHWVersion_Request {
 
 message SkyHawkPmgr_GetHWVersion_Reply {
     int32 hwVersion = 1;
-    Error error = 2;
 }
 
 // ======== Network Protocol ========
@@ -123,7 +109,6 @@ message Network_GetState_Request {
 
 message Network_GetState_Reply {    
     uint32 networkState = 1;
-    Error error = 2;
 }
 
 // ======== SerialPort Protocol ========
@@ -137,19 +122,19 @@ service SerialPort_Service {
 message SerialPort_Write_Request {
     string deviceName = 1;
     bytes data = 2;
+    string mode = 3;
 }
 
 message SerialPort_Write_Reply {
-    Error error = 1;
 }
 
 message SerialPort_Read_Request {
     string deviceName = 1;
+    string mode = 2;
 }
 
 message SerialPort_Read_Reply {    
     bytes data = 1;
-    Error error = 2;
 }
 
 message SerialPort_StopReading_Request {
@@ -157,7 +142,6 @@ message SerialPort_StopReading_Request {
 }
 
 message SerialPort_StopReading_Reply {
-    Error error = 1;
 }
 
 message SerialPort_Config_Request {  
@@ -170,7 +154,6 @@ message SerialPort_Config_Request {
 }
 
 message SerialPort_Config_Reply {    
-    Error error = 1;
 }
 
 // ======== Modem Protocol ========
@@ -272,7 +255,6 @@ message Wifi_GetAccessPoints_Reply {
         uint32 signalQuality = 2;
     }
     repeated AccessPoint accessPoint = 2;
-    Error error = 3;
 }
 
 message Wifi_AddConnection_Request {
@@ -283,7 +265,6 @@ message Wifi_AddConnection_Request {
 }
 
 message Wifi_AddConnection_Reply {
-    Error error = 1;
 }
 
 message Wifi_GetConnections_Request {
@@ -291,7 +272,6 @@ message Wifi_GetConnections_Request {
 
 message Wifi_GetConnections_Reply {
     repeated Connection wifiConnection = 1;
-    Error error = 2;
 }
 
 message Wifi_Connect_Request {
@@ -299,7 +279,6 @@ message Wifi_Connect_Request {
 }
 
 message Wifi_Connect_Reply {
-    Error error = 1;
 }
 
 message Wifi_RemoveConnection_Request {
@@ -307,7 +286,6 @@ message Wifi_RemoveConnection_Request {
 }
 
 message Wifi_RemoveConnection_Reply {
-    Error error = 1;
 }
 
 message Wifi_SetAutoConnect_Request {
@@ -315,7 +293,6 @@ message Wifi_SetAutoConnect_Request {
 }
 
 message Wifi_SetAutoConnect_Reply {
-    Error error = 1;
 }
 
 
@@ -332,7 +309,6 @@ message RTC_GetTime_Request {
 
 message RTC_GetTime_Reply {
     uint64 unixTimestamp = 1;
-    Error error = 2;
 }
 
 message RTC_SetTime_Request {
@@ -340,41 +316,78 @@ message RTC_SetTime_Request {
 }
 
 message RTC_SetTime_Reply {
-    Error error = 1;
 }
 
 // ======== Accelerometer Protocol ========
 service Accelerometer_Service {
-    rpc Accelerometer_Start (Accelerometer_Start_Request) returns (Accelerometer_Start_Reply) {}
-    rpc Accelerometer_Stop (Accelerometer_Stop_Request) returns (Accelerometer_Stop_Reply) {}
     rpc Accelerometer_Get_Samples (Accelerometer_Get_Samples_Request) returns (Accelerometer_Get_Samples_Reply) {}
-}
-
-message Accelerometer_Start_Request {
-    int32 dataRate = 1;
-    int32 axisRange = 2;
-}
-
-message Accelerometer_Start_Reply {
-    Error error = 1;
-}
-
-message Accelerometer_Stop_Request {
-}
-
-message Accelerometer_Stop_Reply {
-}
-
-message Accelerometer_Get_Samples_Request {
+    rpc Accelerometer_Set_Data_Rate(Accelerometer_Set_Data_Rate_Request) returns (Accelerometer_Set_Data_Rate_Reply) {}
+    rpc Accelerometer_Set_Range(Accelerometer_Set_Range_Request) returns (Accelerometer_Set_Range_Reply) {}
+    rpc Accelerometer_Set_Trigger(Accelerometer_Set_Trigger_Request) returns (Accelerometer_Set_Trigger_Reply) {}
+    rpc Accelerometer_Start_Monitoring (Accelerometer_Start_Monitoring_Request) returns (Accelerometer_Start_Monitoring_Reply) {}
+    rpc Accelerometer_Start_Trigger (Accelerometer_Start_Trigger_Request) returns (Accelerometer_Start_Trigger_Reply) {}
+    rpc Accelerometer_Stop_Monitoring (Accelerometer_Stop_Monitoring_Request) returns (Accelerometer_Stop_Monitoring_Reply) {}
+    rpc Accelerometer_Stop_Trigger (Accelerometer_Stop_Trigger_Request) returns (Accelerometer_Stop_Trigger_Reply) {}
 }
 
 message Accelerometer_Get_Samples_Reply {
     repeated double xAxis = 1;
     repeated double yAxis = 2;
     repeated double zAxis = 3;
-    Error error = 4;
+    repeated uint64 timestamp = 4;
 }
 
+message Accelerometer_Get_Samples_Request {
+}
+
+message Accelerometer_Set_Data_Rate_Reply {
+}
+
+message Accelerometer_Set_Data_Rate_Request {
+    int32 dataRate = 1;
+}
+
+message Accelerometer_Set_Range_Reply {
+}
+
+message Accelerometer_Set_Range_Request {
+    int32 axisRange = 1;
+}
+
+message Accelerometer_Set_Trigger_Reply {
+}
+
+message Accelerometer_Set_Trigger_Request {
+    int32 thsX = 1;
+    int32 thsY = 2;
+    int32 thsZ = 3;
+    int32 dur = 4;
+    int32 conf = 5;
+}
+
+message Accelerometer_Start_Monitoring_Reply {
+}
+
+message Accelerometer_Start_Monitoring_Request {
+}
+
+message Accelerometer_Start_Trigger_Reply {
+}
+
+message Accelerometer_Start_Trigger_Request {
+}
+
+message Accelerometer_Stop_Monitoring_Reply {
+}
+
+message Accelerometer_Stop_Monitoring_Request {
+}
+
+message Accelerometer_Stop_Trigger_Reply {
+}
+
+message Accelerometer_Stop_Trigger_Request {
+}
 
 // ======== Wiegand Protocol ========
 service Wiegand_Service {
@@ -388,7 +401,6 @@ message Wiegand_Read_Request {
 
 message Wiegand_Read_Reply {    
     int64 data = 1;
-    Error error = 2;
 }
 
 message Wiegand_StopReading_Request {
@@ -396,5 +408,210 @@ message Wiegand_StopReading_Request {
 }
 
 message Wiegand_StopReading_Reply {
-    Error error = 1;
+}
+
+
+// ======== OneWire Protocol ========
+service OneWire_Service {
+    rpc OneWire_Write(OneWire_Write_Request) returns (OneWire_Write_Reply) {}
+    rpc OneWire_Triplet(OneWire_Triplet_Request) returns (OneWire_Triplet_Reply) {}
+    rpc OneWire_Read(OneWire_Read_Request) returns (OneWire_Read_Reply) {}
+    rpc OneWire_PowerOff(OneWire_PowerOff_Request) returns (OneWire_PowerOff_Reply) {}
+    rpc OneWire_PowerOn(OneWire_PowerOn_Request) returns (OneWire_PowerOn_Reply) {}
+    rpc OneWire_AdjustPort(OneWire_AdjustPort_Request) returns (OneWire_AdjustPort_Reply) {}
+    rpc OneWire_GetStatus(OneWire_GetStatus_Request) returns (OneWire_GetStatus_Reply) {}
+    rpc OneWire_SetOverdriveSpeed(OneWire_SetOverdriveSpeed_Request) returns (OneWire_SetOverdriveSpeed_Reply) {}
+    rpc OneWire_Reset(OneWire_Reset_Request) returns (OneWire_Reset_Reply) {}
+    rpc OneWire_SetRegister(OneWire_SetRegister_Request) returns (OneWire_SetRegister_Reply) {}
+    rpc OneWire_GetRegister(OneWire_GetRegister_Request) returns (OneWire_GetRegister_Reply) {}
+}
+
+message OneWire_Write_Request {
+    string deviceName = 1;
+    int32 data = 2;
+    string mode = 3;
+}
+
+message OneWire_Write_Reply {
+}
+
+message OneWire_Triplet_Request {
+    string deviceName = 1;
+    bool direction = 2;
+}
+
+message OneWire_Triplet_Reply {
+    bool power = 1;
+    bool overdrive = 2;
+    bool strongPullUp = 3;
+    bool activePullUp = 4;
+    bool pulseDetected = 5;
+    bool logicLevel = 6;
+    bool oneWireBusy = 7;
+    bool shortDetected = 8;
+    bool deviceReset = 9;
+    bool singleBitResult = 10;
+    bool tripletSecondBit = 11;
+    bool branchDir = 12;
+}
+
+message OneWire_Read_Request {
+    string deviceName = 1;
+    int32 numberOfBytes = 2;
+}
+
+message OneWire_Read_Reply {
+    repeated int32 data = 1;
+}
+
+message OneWire_PowerOff_Request {
+    string deviceName = 1;
+}
+
+message OneWire_PowerOff_Reply {
+}
+
+message OneWire_PowerOn_Request {
+    string deviceName = 1;
+}
+
+message OneWire_PowerOn_Reply {
+}
+
+message OneWire_AdjustPort_Request {
+    string deviceName = 1;
+    int32 data =2;
+}
+
+message OneWire_AdjustPort_Reply {
+    int32 value =1;
+}
+
+message OneWire_GetStatus_Request {
+    string deviceName = 1;
+}
+
+message OneWire_GetStatus_Reply {
+    bool power = 1;
+    bool overdrive = 2;
+    bool strongPullUp = 3;
+    bool activePullUp = 4;
+    bool pulseDetected = 5;
+    bool logicLevel = 6;
+    bool oneWireBusy = 7;
+    bool shortDetected = 8;
+    bool deviceReset = 9;
+    bool singleBitResult = 10;
+    bool tripletSecondBit = 11;
+    bool branchDir = 12;
+}
+
+message OneWire_SetOverdriveSpeed_Request {
+    string deviceName = 1;
+    bool overdrive = 2;
+}
+
+message OneWire_SetOverdriveSpeed_Reply {
+}
+
+message OneWire_Reset_Request {
+    string deviceName = 1;
+}
+
+message OneWire_Reset_Reply {
+}
+
+message OneWire_SetRegister_Request {
+    string deviceName = 1;
+    int32 reg = 2;
+    int32 data = 3;
+}
+
+message OneWire_SetRegister_Reply {
+}
+
+message OneWire_GetRegister_Request {
+    string deviceName = 1;
+    int32 reg = 2;
+}
+
+message OneWire_GetRegister_Reply {
+    int32 value = 1;
+}
+
+
+// ======== SkyhawkMisc Protocol ========
+service SkyhawkMisc_Service {
+    rpc WiegandEN_OneWireDIS_Set(WiegandEN_OneWireDIS_Set_Request) returns (WiegandEN_OneWireDIS_Set_Reply) {}
+    rpc WiegandEN_OneWireDIS_Get(WiegandEN_OneWireDIS_Get_Request) returns (WiegandEN_OneWireDIS_Get_Reply) {}
+    rpc WWANAntennaEN_Set(WWANAntennaEN_Set_Request) returns (WWANAntennaEN_Set_Reply) {}
+    rpc WWANAntennaEN_Get(WWANAntennaEN_Get_Request) returns (WWANAntennaEN_Get_Reply) {}
+    rpc PoEEN_Set(PoEEN_Set_Request) returns (PoEEN_Set_Reply) {}
+    rpc PoEEN_Get(PoEEN_Get_Request) returns (PoEEN_Get_Reply) {}
+    rpc MezzSerialMode_Set(MezzSerialMode_Set_Request) returns (MezzSerialMode_Set_Reply) {}
+    rpc MezzSerialMode_Get(MezzSerialMode_Get_Request) returns (MezzSerialMode_Get_Reply) {}
+    rpc DetectMezz(DetectMezz_Request) returns (DetectMezz_Reply) {}
+}
+
+message WiegandEN_OneWireDIS_Set_Request {
+    bool requestedState = 1;
+}
+
+message WiegandEN_OneWireDIS_Set_Reply {
+}
+
+message WiegandEN_OneWireDIS_Get_Request {
+}
+
+message WiegandEN_OneWireDIS_Get_Reply {
+    bool value = 1;
+}
+
+message WWANAntennaEN_Set_Request {
+    bool requestedState = 1;
+}
+
+message WWANAntennaEN_Set_Reply {
+}
+
+message WWANAntennaEN_Get_Request {
+}
+
+message WWANAntennaEN_Get_Reply {
+    bool value = 1;
+}
+
+message PoEEN_Set_Request {
+    bool requestedState = 1;
+}
+
+message PoEEN_Set_Reply {
+}
+
+message PoEEN_Get_Request {
+}
+
+message PoEEN_Get_Reply {
+    bool value = 1;
+}
+
+message MezzSerialMode_Set_Request {
+    string mode = 1;
+}
+
+message MezzSerialMode_Set_Reply {
+}
+
+message MezzSerialMode_Get_Request {
+}
+
+message MezzSerialMode_Get_Reply {
+    string value = 1;
+}
+
+message DetectMezz_Request {
+}
+
+message DetectMezz_Reply {
+    bool value = 1;
 }

@@ -1,0 +1,11 @@
+mkdir -p generatedCodeCopy
+python -m grpc_tools.protoc -I../../proto --python_out=generatedCodeCopy --grpc_python_out=generatedCodeCopy ../../proto/blink.proto
+python -m grpc_tools.protoc -I../../proto --python_out=gpioExample --grpc_python_out=gpioExample ../../proto/blink.proto
+python -m grpc_tools.protoc -I../../proto --python_out=rtcExample --grpc_python_out=rtcExample ../../proto/blink.proto
+python -m grpc_tools.protoc -I../../proto --python_out=networkExample --grpc_python_out=networkExample ../../proto/blink.proto
+python -m grpc_tools.protoc -I../../proto --python_out=skyhawkMiscExample --grpc_python_out=skyhawkMiscExample ../../proto/blink.proto
+python -m grpc_tools.protoc -I../../proto --python_out=wiegandExample --grpc_python_out=wiegandExample ../../proto/blink.proto
+python -m grpc_tools.protoc -I../../proto --python_out=serialExample --grpc_python_out=serialExample ../../proto/blink.proto
+python -m grpc_tools.protoc -I../../proto --python_out=accelerometerExample --grpc_python_out=accelerometerExample ../../proto/blink.proto
+python -m grpc_tools.protoc -I../../proto --python_out=skyhawkPowerExample --grpc_python_out=skyhawkPowerExample ../../proto/blink.proto
+python -m grpc_tools.protoc -I../../proto --python_out=wifiExample --grpc_python_out=wifiExample ../../proto/blink.proto

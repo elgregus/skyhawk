@@ -42,7 +42,15 @@ public class BLink_Accelerometer_example {
       // Accelerometer start example
       // Valid output data rate: 0, 10, 50, 100, 200, 400, 800
       // Valid range: 2, 4, 8
-      blink.accelerometerService.start(400, 2);
+      blink.accelerometerService.setDataRate(50);
+      blink.accelerometerService.setRange(2);
+
+      // Set and start trigger (see documentation for more details)
+      blink.accelerometerService.setTrigger(150, 150, 150, 0, 42);
+      blink.accelerometerService.startTrigger();
+
+      // Start Monitoring
+      blink.accelerometerService.startMonitoring();
 
       // Fetch data every second to display the latest data and the buffers count on each axis
       TimerTask displayLastData = new TimerTask() {
@@ -52,13 +60,18 @@ public class BLink_Accelerometer_example {
               java.util.List<Double> x = samples[0];
               java.util.List<Double> y = samples[1];
               java.util.List<Double> z = samples[2];
+              java.util.List<Long> timestamp = samples[3];
 
-              Double lastX = x.get(x.size() - 1);
-              Double lastY = y.get(y.size() - 1);
-              Double lastZ = z.get(z.size() - 1);
+              if (x.size() > 0 && y.size() > 0 && z.size() > 0 && timestamp.size() > 0) {
+                Double lastX = x.get(x.size() - 1);
+                Double lastY = y.get(y.size() - 1);
+                Double lastZ = z.get(z.size() - 1);
+                Long lastTimestamp = timestamp.get(timestamp.size() - 1);
 
-              logger.log(Level.INFO, "Count [x y z]: " + x.size() + " " + y.size() + " " + z.size());
-              logger.log(Level.INFO, "Last  [x y z]: " + lastX + " " + lastY + " " + lastZ);
+                logger.log(Level.INFO, "Count  [x y z]: " + x.size() + " " + y.size() + " " + z.size());
+                logger.log(Level.INFO, "Last   [x y z]: " + lastX + " " + lastY + " " + lastZ);
+                logger.log(Level.INFO, "Last Timestamp: " + lastTimestamp);
+              }
           }
       };
       Timer timer = new Timer();
@@ -68,9 +81,12 @@ public class BLink_Accelerometer_example {
       TimeUnit.SECONDS.sleep(60);
       timer.cancel();
       timer.purge();
-      blink.accelerometerService.stop();
 
+      // Stop accelerometer
+      blink.accelerometerService.stopMonitoring();
+      blink.accelerometerService.stopTrigger();
     } finally {
+      TimeUnit.SECONDS.sleep(5);
       blink.shutdown();
     }
   }

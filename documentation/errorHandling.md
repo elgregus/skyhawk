@@ -3,17 +3,16 @@ Error Handling
 
 ### Structure
 
-To simplify error handling for the client, the server will always return a structure containing any errors that occurred during the gRPC call.
+When an error occurs, the server will return a string containing a JSON structure that contains the error that occurred during the gRPC call.
 
 The structure consists of two parameters, an integer containing the error code (see table below for a list of all error codes) <br> and an error message which is a human readable string explaining what triggered the error. (Used mostly during during development)
 
+Example :
 ~~~~
-
-message Error {
-    int32 errorCode = 1;
-    String errorMessage = 2;
+{
+"errorCode" : 5,
+"errorMessage" : "Requested setGPIO on an output GPIO"
 }
-
 ~~~~
 
 ---------------------------------
@@ -21,19 +20,33 @@ message Error {
 
 ### Getting The Error
 
-Errors are passed through any procedures reply message. 
-To get the error code and error message, you need to use the following method :
+Errors are passed through the gRPC status in the description parameter. 
+To get the error code and error message, you need to use the following procedure :
 
+NB : In this example we use JsonParser and JsonObject from gson to simplify json conversions
 ~~~~{.java}
 
-ServiceName_ProcedureName_Reply reply = blockingStub.serviceNameProcedureName(request)
+try {
+   	response = blockingStub.gpioSet(request);
+} catch (StatusRuntimeException e) {
+    // Log
+    logger.log(Level.WARNING, "RPC failed " + e.getStatus() + " " + e.getMessage());
 
-int errorCode = reply.getError().getErrorCode();
-String errorMessage = reply.getError().getErrorMessage();
+    // Get the description
+    JsonParser parser = new JsonParser();
+    JsonObject jsonDescription = parser.parse(e.getStatus().getDescription()).getAsJsonObject();
+           
+    //Convert to int and string
+    int errorCode = jsonDescription.get("errorCode").getAsInt();
+    String errorMessage = jsonDescription.get("errorMessage").getAsString();
+            
+    System.out.println(Integer.toString(errorCode) + " : " + errorMessage);
+    return;
+}
 
 ~~~~
 
-See the provided GPIO example for a demonstration of the error handling.
+See the provided GPIO example set method for a basic demonstration of the error handling.
 
 ---------------------------------
 

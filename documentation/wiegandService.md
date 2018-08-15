@@ -3,6 +3,8 @@ Wiegand Service
 
 The wiegand Service is used to read the wiegand port on the Mezz of the device. This port is read only and all configuration is handled by the server.
 
+Important note : The Wiegand port is plexed with the OneWire port. You need to [use the SkyHawkMisc Service](skyHawkMiscService.md) to select which mode you want to use.
+
 The methods described and the example below will make direct use of gRPC calls.
 
 This implementation does not handles errors. See [services](services.md) to learn how to implement error handling in this wrapper.

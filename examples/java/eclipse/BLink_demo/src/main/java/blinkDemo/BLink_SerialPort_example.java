@@ -5,6 +5,8 @@ import static io.grpc.stub.ClientCalls.asyncServerStreamingCall;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
+import com.google.protobuf.ByteString;
+
 import blink_grpc.BLink;
 import blink_grpc.SerialPort_Read_Reply;
 import blink_grpc.SerialPort_Read_Request;
@@ -51,29 +53,29 @@ public class BLink_SerialPort_example {
       // Serial Port Example (Echo of RX:ttymxc1 into TX:ttymxc1)
       blink.serialReadStub = SerialPort_ServiceGrpc.newStub(blink.channel);
       blink.serialWriteStub = SerialPort_ServiceGrpc.newBlockingStub(blink.channel);     
-      SerialPort_Read_Request readRequest = SerialPort_Read_Request.newBuilder().setDeviceName("BaseSerial").build();
+      SerialPort_Read_Request readRequest = SerialPort_Read_Request.newBuilder().setDeviceName("MezzSerial").setMode("RS485").build();
       
       blink.serialReadStub.serialPortRead(readRequest, new StreamObserver<blink_grpc.SerialPort_Read_Reply>() {
 		public void onNext(SerialPort_Read_Reply value) {
 			// Change config on c press
 			System.out.println("New char : " + value.getData().toStringUtf8());
 			if(value.getData().toStringUtf8().equals("c")) {
-				SerialPort_Config_Request configRequest = SerialPort_Config_Request.newBuilder().setDeviceName("BaseSerial")
+/*				SerialPort_Config_Request configRequest = SerialPort_Config_Request.newBuilder().setDeviceName("MezzSerial")
 						.setBaudrate(9600)
 						.setCharSize(8)
 						.setFlowControl("none")
 						.setParity("none")
 						.setStopBits("one")
 						.build();
-				blink.serialWriteStub.serialPortConfig(configRequest);
+				blink.serialWriteStub.serialPortConfig(configRequest);*/
 			} else if(value.getData().toStringUtf8().equals("q")) {
-				SerialPort_StopReading_Request stopReadingRequest = SerialPort_StopReading_Request.newBuilder().setDeviceName("BaseSerial")
+				SerialPort_StopReading_Request stopReadingRequest = SerialPort_StopReading_Request.newBuilder().setDeviceName("MezzSerial")
 					.build();
 				blink.serialWriteStub.serialPortStopReading(stopReadingRequest);
 				// onNext will not be called after stopping, exit gracefully
 			} else {
-				SerialPort_Write_Request writeRequest = SerialPort_Write_Request.newBuilder().setDeviceName("BaseSerial").setData(value.getData()).build();
-				blink.serialWriteStub.serialPortWrite(writeRequest);
+//				SerialPort_Write_Request writeRequest = SerialPort_Write_Request.newBuilder().setDeviceName("MezzSerial").setData(value.getData()).setMode("RS485").build();
+//				blink.serialWriteStub.serialPortWrite(writeRequest);
 			}
 		}
 
@@ -91,6 +93,8 @@ public class BLink_SerialPort_example {
 
       while(true){
           Thread.sleep(1000);
+    	  SerialPort_Write_Request writeRequest = SerialPort_Write_Request.newBuilder().setDeviceName("MezzSerial").setData(ByteString.copyFromUtf8("Testing one two")).setMode("RS485").build();
+	      blink.serialWriteStub.serialPortWrite(writeRequest);
       }
 
 			

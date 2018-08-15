@@ -108,6 +108,24 @@
 	        			</goals>
 	      			</execution>
 	      			<execution>
+	        			<id>SkyHawkMisc-make-jar-with-dependencies</id>
+	        			<phase>package</phase>
+	        			<configuration>
+					      <archive>
+						    <manifest>
+							  <mainClass>blinkDemo.BLink_SkyHawkMisc_example</mainClass>
+						    </manifest>
+					      </archive>
+					      <descriptorRefs>
+						    <descriptorRef>jar-with-dependencies</descriptorRef>
+					      </descriptorRefs>
+					      <finalName>BLink_SkyHawkMisc_example.jar</finalName>
+				        </configuration>
+	        			<goals>
+	          				<goal>single</goal>
+	        			</goals>
+	      			</execution>
+	      			<execution>
 	        			<id>SerialPort-make-jar-with-dependencies</id>
 	        			<phase>package</phase>
 	        			<configuration>
@@ -137,7 +155,43 @@
 					      <descriptorRefs>
 						    <descriptorRef>jar-with-dependencies</descriptorRef>
 					      </descriptorRefs>
-					      <finalName>BLink_WiFe_example.jar</finalName>
+					      <finalName>BLink_WiFi_example.jar</finalName>
+				        </configuration>
+	        			<goals>
+	          				<goal>single</goal>
+	        			</goals>
+	      			</execution>
+	      			<execution>
+	        			<id>RTC-make-jar-with-dependencies</id>
+	        			<phase>package</phase>
+	        			<configuration>
+					      <archive>
+						    <manifest>
+							  <mainClass>blinkDemo.BLink_RTC_example</mainClass>
+						    </manifest>
+					      </archive>
+					      <descriptorRefs>
+						    <descriptorRef>jar-with-dependencies</descriptorRef>
+					      </descriptorRefs>
+					      <finalName>BLink_RTC_example.jar</finalName>
+				        </configuration>
+	        			<goals>
+	          				<goal>single</goal>
+	        			</goals>
+	      			</execution>
+	      			<execution>
+	        			<id>OneWire-make-jar-with-dependencies</id>
+	        			<phase>package</phase>
+	        			<configuration>
+					      <archive>
+						    <manifest>
+							  <mainClass>blinkDemo.BLink_OneWire_example</mainClass>
+						    </manifest>
+					      </archive>
+					      <descriptorRefs>
+						    <descriptorRef>jar-with-dependencies</descriptorRef>
+					      </descriptorRefs>
+					      <finalName>BLink_OneWire_example.jar</finalName>
 				        </configuration>
 	        			<goals>
 	          				<goal>single</goal>

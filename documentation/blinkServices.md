@@ -20,6 +20,8 @@ However, you may still adapt them to implement your own [Error Handling](errorHa
  + Provides methods to get/set time.
 - [SkyHawkPowerManager](skyHawkPmgrService.md)
  + Provides methods to control the power manager.
+- [SkyHawkMisc](skyHawkMiscService.md)
+ + Provides methods to control misc features of skyhawk such as the mezz.
 - [Accelerometer](accelerometerService.md)
  + Provides methods to control the accelerometer.
 - [Wiegand](wiegandService.md)
