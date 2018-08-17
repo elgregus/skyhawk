@@ -6,7 +6,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
 import blink_grpc.BLink;
-import blink_grpc.Connection;
 import blink_grpc.SerialPort_Read_Reply;
 import blink_grpc.SerialPort_Read_Request;
 import blink_grpc.SerialPort_ServiceGrpc;
@@ -54,16 +53,16 @@ public class BLink_WiFi_example {
       for (AccessPoint item : accessPoints) {
         logger.info("SSID: " + item.getSsid() + " Signal: " + item.getSignalQuality() + "%");
       }
-      
+          
       // Connect to a WiFi access point
-      blink.wifiService.AddConnection("test", "ssid", "psk134567234", false);
+      blink.wifiService.AddSimpleConnection("test", "ssid", "psk134567234", false);
       blink.wifiService.Connect("test");     
       blink.wifiService.AutoConnect(true); // optional, use to re-connect when signal is temporarily lost
       
       // Print current WiFi connections
-      java.util.List<Connection> wifiConnections = blink.wifiService.GetConnections();
-      for (Connection item : wifiConnections) {
-          logger.info("ID: " + item.getId() + " " + item.getUuid());
+      java.util.List<String> wifiConnections = blink.wifiService.GetConnections();
+      for (String item : wifiConnections) {
+          logger.info("ID: " + item);
       }
 			
     } finally {
