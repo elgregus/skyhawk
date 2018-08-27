@@ -95,13 +95,20 @@ message SkyHawkPmgr_GetHWVersion_Reply {
 }
 
 // ======== Network Protocol ========
-message Connection {
-    string id = 1;
-    string uuid = 2;
+service Network_Service {
+    rpc Network_AddConnection(Network_AddConnection_Request) returns (Network_AddConnection_Reply) {}
+    rpc Network_RemoveConnection(Network_RemoveConnection_Request) returns (Network_RemoveConnection_Reply) {}
+    rpc Network_GetConnections(Network_GetConnections_Request) returns (Network_GetConnections_Reply) {}
+    rpc Network_GetConnectionSettings(Network_GetConnectionSettings_Request) returns (Network_GetConnectionSettings_Reply) {}
+    rpc Network_GetState(Network_GetState_Request) returns (Network_GetState_Reply) {}
 }
 
-service Network_Service {
-    rpc Network_GetState(Network_GetState_Request) returns (Network_GetState_Reply) {}
+message Network_AddConnection_Request {
+    string json_settings = 1;
+    bool saveToDisk = 2;
+}
+
+message Network_AddConnection_Reply {
 }
 
 message Network_GetState_Request {
@@ -109,6 +116,29 @@ message Network_GetState_Request {
 
 message Network_GetState_Reply {    
     uint32 networkState = 1;
+}
+
+message Network_GetConnections_Request {
+}
+
+message Network_GetConnections_Reply {    
+    repeated string connectionId = 1;
+}
+
+message Network_GetConnectionSettings_Request {
+    string connectionId = 1;
+}
+
+message Network_GetConnectionSettings_Reply {    
+    string json_settings = 1;
+}
+
+message Network_RemoveConnection_Request {    
+    string connectionId = 1;
+}
+
+message Network_RemoveConnection_Reply {    
+    bool connectionRemoved = 1;
 }
 
 // ======== SerialPort Protocol ========
@@ -239,7 +269,7 @@ message Modem_Disconnect_Reply {
 // ======== Network.Wifi Protocol ========
 service Wifi_Service {
     rpc Wifi_GetAccessPoints(Wifi_GetAccessPoints_Request) returns (Wifi_GetAccessPoints_Reply) {}
-    rpc Wifi_AddConnection(Wifi_AddConnection_Request) returns (Wifi_AddConnection_Reply) {}
+    rpc Wifi_AddSimpleConnection(Wifi_AddSimpleConnection_Request) returns (Wifi_AddSimpleConnection_Reply) {}
     rpc Wifi_GetConnections(Wifi_GetConnections_Request) returns (Wifi_GetConnections_Reply) {}
     rpc Wifi_Connect(Wifi_Connect_Request) returns (Wifi_Connect_Reply) {}
     rpc Wifi_RemoveConnection(Wifi_RemoveConnection_Request) returns (Wifi_RemoveConnection_Reply) {}
@@ -257,35 +287,36 @@ message Wifi_GetAccessPoints_Reply {
     repeated AccessPoint accessPoint = 2;
 }
 
-message Wifi_AddConnection_Request {
-    string id = 1;
+message Wifi_AddSimpleConnection_Request {
+    string connectionId = 1;
     string ssid = 2;
     string psk = 3;
     bool persistent = 4;
 }
 
-message Wifi_AddConnection_Reply {
+message Wifi_AddSimpleConnection_Reply {
 }
 
 message Wifi_GetConnections_Request {
 }
 
 message Wifi_GetConnections_Reply {
-    repeated Connection wifiConnection = 1;
+    repeated string connectionId = 1;
 }
 
 message Wifi_Connect_Request {
-    string id = 1;
+    string connectionId = 1;
 }
 
 message Wifi_Connect_Reply {
 }
 
 message Wifi_RemoveConnection_Request {
-    string id = 1;
+    string connectionId = 1;
 }
 
 message Wifi_RemoveConnection_Reply {
+    bool connectionRemoved = 1;
 }
 
 message Wifi_SetAutoConnect_Request {

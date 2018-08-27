@@ -2,8 +2,7 @@ package blinkDemo;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import blink_grpc.Connection;
-import blink_grpc.Wifi_AddConnection_Request;
+import blink_grpc.Wifi_AddSimpleConnection_Request;
 import blink_grpc.Wifi_Connect_Request;
 import blink_grpc.Wifi_GetAccessPoints_Reply;
 import blink_grpc.Wifi_GetAccessPoints_Reply.AccessPoint;
@@ -44,7 +43,7 @@ public class BLink_WiFi {
     }
     
     /** Get the WiFi connections points list */
-    public java.util.List<Connection> GetConnections() throws StatusRuntimeException {
+    public java.util.List<String> GetConnections() throws StatusRuntimeException {
 
         Wifi_GetConnections_Request request = Wifi_GetConnections_Request.newBuilder().build();
 
@@ -56,13 +55,13 @@ public class BLink_WiFi {
             throw e;
         }
 
-        return response.getWifiConnectionList();
+        return response.getConnectionIdList();
     }
 
     /** Connect to a WiFi connection */
     public void Connect(String id) throws StatusRuntimeException {
 
-        Wifi_Connect_Request request = Wifi_Connect_Request.newBuilder().setId(id).build();
+        Wifi_Connect_Request request = Wifi_Connect_Request.newBuilder().setConnectionId(id).build();
 
         try {
             blockingStub.wifiConnect(request);
@@ -73,13 +72,13 @@ public class BLink_WiFi {
     }
 
     /** Add a WiFi connection */
-    public void AddConnection(String id, String ssid, String psk, Boolean persistent) throws StatusRuntimeException {
+    public void AddSimpleConnection(String id, String ssid, String psk, Boolean persistent) throws StatusRuntimeException {
 
-        Wifi_AddConnection_Request request = Wifi_AddConnection_Request.newBuilder().setId(id).setSsid(ssid).setPsk(psk)
+        Wifi_AddSimpleConnection_Request request = Wifi_AddSimpleConnection_Request.newBuilder().setConnectionId(id).setSsid(ssid).setPsk(psk)
                 .setPersistent(persistent).build();
 
         try {
-            blockingStub.wifiAddConnection(request);
+            blockingStub.wifiAddSimpleConnection(request);
         } catch (StatusRuntimeException e) {
             logger.log(Level.WARNING, "RPC failed " + e.getStatus() + " " + e.getMessage());
             throw e;
