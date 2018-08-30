@@ -22,15 +22,15 @@ import blink_grpc.MezzSerialMode_Get_Request;
 import blink_grpc.MezzSerialMode_Get_Reply;
 import blink_grpc.DetectMezz_Request;
 import blink_grpc.DetectMezz_Reply;
-import blink_grpc.SkyhawkMisc_ServiceGrpc;
-import blink_grpc.SkyhawkMisc_ServiceGrpc.SkyhawkMisc_ServiceBlockingStub;
+import blink_grpc.SkyHawkMisc_ServiceGrpc;
+import blink_grpc.SkyHawkMisc_ServiceGrpc.SkyHawkMisc_ServiceBlockingStub;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 
 public class BLink_SkyHawkMisc_example {
 
   private final ManagedChannel channel; 
-  private SkyhawkMisc_ServiceBlockingStub skyhawkMiscStub;
+  private SkyHawkMisc_ServiceBlockingStub skyhawkMiscStub;
 
   private static final Logger logger = Logger.getLogger(BLink_SkyHawkPowerManager_example.class.getName());
 
@@ -55,7 +55,7 @@ public class BLink_SkyHawkMisc_example {
     final BLink_SkyHawkMisc_example blink = new BLink_SkyHawkMisc_example("localhost", 50051);
     try {
       //Init stub
-      blink.skyhawkMiscStub = SkyhawkMisc_ServiceGrpc.newBlockingStub(blink.channel);    
+      blink.skyhawkMiscStub = SkyHawkMisc_ServiceGrpc.newBlockingStub(blink.channel);    
 
       // Detect Mezz
       DetectMezz_Request detectMezzRequest = DetectMezz_Request.newBuilder().build();
