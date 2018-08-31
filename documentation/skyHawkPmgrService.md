@@ -35,10 +35,9 @@ To see a complete list of all available registers and accepted values, see secti
 #### bool updateFW(String filePath):
 
 The updateFw method is used to update the firmware in the LPM.<br>
-This call is quite long (can take up to 10 minutes) so it should be called in its own thread.
+param  : 
 
-- param  : 
-         + String filePath   : Path of the new .bin file to update the firmware with.
+- ​    + String filePath   : Path of the new .bin file to update the firmware with.
 - return : 
          + Boolean : true for success, false for failure.
 
