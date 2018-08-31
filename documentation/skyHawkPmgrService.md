@@ -60,56 +60,6 @@ The getHWVersion method is used to get the actual hardware version of the board.
 
 ---------------------------------
 
-### Java Example
-This is a short example only covering the basic operations.<br>
-For a more robust and detailed implementation, go see the example project file BLink_SkyHawkPowerManager_example.java
-~~~~{.java}
-import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import io.grpc.ManagedChannel;
-import io.grpc.ManagedChannelBuilder;
-
-public class BLink_SkyHawk_example {
-
-  String host = "localhost";
-  int port = 50051;
-
-  public void testSkyHawkLPM() {
-    final MannagedChannel channel = ManagedChannelBuilder.forAddress(host, port).usePlaintext(true).build();
-    final BLink_SkyHawkPowerManager SkyHawkPowerManagerService = new BLink_SkyHawkPowerManager(channel);
-    
-	try {
-      // Get the FWVersion
-      String fwVersion = SkyHawkPowerManager.getFWVersion();
-	  
-	  SkyHawkPowerManager.setRegister(CPU_WAKE_DELAY, 1000);
-	  System.out.print(SkyHawkPowerManager.getRegister(CPU_WAKE_DELAY));
-	  
-	  // Update
-	  logger.log(Level.INFO, "skyHawkLPM: fwVersion is : " + fwVersion);
-      if(fwVersion.equals("0.00.001.00")) {
-    	System.out.print(SkyHawkPowerManager.updateFW("fwu_skyhawk_0.00.001.01.bin"));
-  	  } else if (fwVersion.equals("0.00.001.01")) {
-    	System.out.print(SkyHawkPowerManager.updateFW("fwu_skyhawk_0.00.001.00.bin"));
-   	  } else {
-    	logger.log(Level.INFO, "skyHawkLPM: fwVersion Invalid : " + fwVersion);
-      }
-			
-    } finally {
-      channel.shutdown().awaitTermination(5, TimeUnit.SECONDS);
-    }
-  }
-}
-~~~~
-
-
-
-------
-
-
-
 ### LPM Register Status LPM v1.00.010
 
 | Registers                                   | Status (Todo, In progress, Done) |
