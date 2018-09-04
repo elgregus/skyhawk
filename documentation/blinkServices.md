@@ -10,8 +10,8 @@ However, you may still adapt them to implement your own [Error Handling](errorHa
 
 - [GPIO](gPIOService.md)
  + Provides methods to get and set GPIOs.
-[comment]: <> (- [Network](networkService.md)
-[comment]: <> ( + Provides a method to get the network actual state.
+- [Network](networkService.md)
++ Provides a method to get the network actual state.
 - [Serial Port](serialPortService.md)
  + Provides methods to read/write and configure the serial port.
 - [WiFi](wiFiService.md)
@@ -20,8 +20,10 @@ However, you may still adapt them to implement your own [Error Handling](errorHa
  + Provides methods to get/set time.
 - [SkyHawkPowerManager](skyHawkPmgrService.md)
  + Provides methods to control the power manager.
+- [SkyHawkMezz](skyHawkMezzService.md)
+ + Provides methods to control the mezzanine.
 - [SkyHawkMisc](skyHawkMiscService.md)
- + Provides methods to control misc features of skyhawk such as the mezz.
+ + Provides methods to control miscellaneous features.
 - [Accelerometer](accelerometerService.md)
  + Provides methods to control the accelerometer.
 - [Wiegand](wiegandService.md)

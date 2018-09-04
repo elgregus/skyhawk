@@ -17,6 +17,43 @@ The GetState method is used to get the actual state of the network subsystem.
 - return :
          + int : Integer with the status of the network. (see Network Status table)
 
+
+
+#### void AddConnection():
+
+The AddConnection method is used to create a custom NetworkManager connection.
+
+- param  : 
+  - JsonObject : The JSON formatted DBus setting for the connection to be added, an example of a static ethernet connection is provided.
+    Refer to the NetworkManager Settings Manual for more information:
+    https://developer.gnome.org/NetworkManager/stable/nm-settings.html
+    More information on the DBus variant types:
+    https://dbus.freedesktop.org/doc/dbus-specification.html
+  - Boolean: If true the added connection will be saved to disk in a persistent manner.
+- return : None
+
+
+
+#### Bool RemoveConnection():
+
+The RemoveConnection method is used to remove an existing connection from the network subsystem.
+
+- param  : 
+  - String : The connectionID of the connection to be removed
+- return :
+  - Bool : Returns true if the connection was successfully removed
+
+
+
+#### void GetConnections():
+
+Get the connections that are currently registered with the NetworkManager
+
+- param  : 
+  - None
+- return :
+  - String List : Returns a list of connectionID associated with the existing connections.
+
 ---------------------------------
 
 ### Constants
@@ -33,44 +70,6 @@ NM_STATE_CONNECTING 	  | 40    | A network connection is being started, <br>the 
 NM_STATE_CONNECTED_LOCAL  | 50    | There is only local IPv4 and/or IPv6 connectivity, <br>but no default route to access the Internet.
 NM_STATE_CONNECTED_SITE   | 60    | There is only site-wide IPv4 and/or IPv6 connectivity. <br>This means a default route is available, <br>but the Internet connectivity check did not succeed.
 NM_STATE_CONNECTED_GLOBAL | 70    | There is global IPv4 and/or IPv6 Internet connectivity. <br>This means the Internet connectivity check succeeded.
-
-
----------------------------------
-
-### Example
-
-This is a short example only covering the basic operations.<br>
-For a more robust and detailed implementation, go see the example project file BLink_Network_example.java and BLink_Network.java
-
-~~~~{.java}
-import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import io.grpc.ManagedChannel;
-import io.grpc.ManagedChannelBuilder;
-
-public class BLink_Network_example {
-
-  String host = "localhost";
-  int port = 50051;
-
-  public void testGPIO() {
-    final MannagedChannel channel = ManagedChannelBuilder.forAddress(host, port).usePlaintext(true).build();
-    final BLink_Network networkService =  = new BLink_Network(channel);
-    
-	try {
-      // get the network state
-      int state = networkService.getState();
-
-	  System.out.print(state);
-			
-    } finally {
-      channel.shutdown().awaitTermination(5, TimeUnit.SECONDS);
-    }
-  }
-}
-~~~~
 
 ---------------------------------
 

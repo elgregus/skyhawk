@@ -47,61 +47,21 @@ message Gpio_StopStreaming_Request {
 message Gpio_StopStreaming_Reply {
 }
 
-// ======== SkyHawkPowerManager Protocol ========
-service SkyHawkPowerManager_Service {
-    rpc SkyHawkPmgr_GetRegister (SkyHawkPmgr_GetRegister_Request) returns (SkyHawkPmgr_GetRegister_Reply) {}
-    rpc SkyHawkPmgr_SetRegister (SkyHawkPmgr_SetRegister_Request) returns (SkyHawkPmgr_SetRegister_Reply) {}
-    rpc SkyHawkPmgr_UpdateFW (SkyHawkPmgr_UpdateFW_Request) returns (SkyHawkPmgr_UpdateFW_Reply) {}
-    rpc SkyHawkPmgr_GetFWVersion (SkyHawkPmgr_GetFWVersion_Request) returns (SkyHawkPmgr_GetFWVersion_Reply) {}
-    rpc SkyHawkPmgr_GetHWVersion (SkyHawkPmgr_GetHWVersion_Request) returns (SkyHawkPmgr_GetHWVersion_Reply) {}
-}
-
-message SkyHawkPmgr_GetRegister_Request {
-    string regName = 1;
-}
-
-message SkyHawkPmgr_GetRegister_Reply {
-    int32 value = 1;
-}
-
-message SkyHawkPmgr_SetRegister_Request {
-    string regName = 1;
-    int32 value = 2;
-}
-
-message SkyHawkPmgr_SetRegister_Reply {
-}
-
-message SkyHawkPmgr_UpdateFW_Request {
-    string filePath = 1;
-}
-
-message SkyHawkPmgr_UpdateFW_Reply {
-    bool success = 1;
-}
-
-message SkyHawkPmgr_GetFWVersion_Request {
-}
-
-message SkyHawkPmgr_GetFWVersion_Reply {
-    string fwVersion = 1;
-}
-
-message SkyHawkPmgr_GetHWVersion_Request {
-}
-
-message SkyHawkPmgr_GetHWVersion_Reply {
-    int32 hwVersion = 1;
-}
-
 // ======== Network Protocol ========
-message Connection {
-    string id = 1;
-    string uuid = 2;
+service Network_Service {
+    rpc Network_AddConnection(Network_AddConnection_Request) returns (Network_AddConnection_Reply) {}
+    rpc Network_RemoveConnection(Network_RemoveConnection_Request) returns (Network_RemoveConnection_Reply) {}
+    rpc Network_GetConnections(Network_GetConnections_Request) returns (Network_GetConnections_Reply) {}
+    rpc Network_GetConnectionSettings(Network_GetConnectionSettings_Request) returns (Network_GetConnectionSettings_Reply) {}
+    rpc Network_GetState(Network_GetState_Request) returns (Network_GetState_Reply) {}
 }
 
-service Network_Service {
-    rpc Network_GetState(Network_GetState_Request) returns (Network_GetState_Reply) {}
+message Network_AddConnection_Request {
+    string json_settings = 1;
+    bool saveToDisk = 2;
+}
+
+message Network_AddConnection_Reply {
 }
 
 message Network_GetState_Request {
@@ -109,6 +69,29 @@ message Network_GetState_Request {
 
 message Network_GetState_Reply {    
     uint32 networkState = 1;
+}
+
+message Network_GetConnections_Request {
+}
+
+message Network_GetConnections_Reply {    
+    repeated string connectionId = 1;
+}
+
+message Network_GetConnectionSettings_Request {
+    string connectionId = 1;
+}
+
+message Network_GetConnectionSettings_Reply {    
+    string json_settings = 1;
+}
+
+message Network_RemoveConnection_Request {    
+    string connectionId = 1;
+}
+
+message Network_RemoveConnection_Reply {    
+    bool connectionRemoved = 1;
 }
 
 // ======== SerialPort Protocol ========
@@ -170,7 +153,6 @@ service Modem_Service {
     rpc Modem_GetSignalInfo(Modem_GetSignalInfo_Request) returns (Modem_GetSignalInfo_Reply) {}
     rpc Modem_SendSMS(Modem_SendSMS_Request) returns (Modem_SendSMS_Reply) {}
     rpc Modem_Update(Modem_Update_Request) returns (Modem_Update_Reply) {}
-
 }
 
 message Modem_GetStatus_Request {
@@ -239,7 +221,7 @@ message Modem_Disconnect_Reply {
 // ======== Network.Wifi Protocol ========
 service Wifi_Service {
     rpc Wifi_GetAccessPoints(Wifi_GetAccessPoints_Request) returns (Wifi_GetAccessPoints_Reply) {}
-    rpc Wifi_AddConnection(Wifi_AddConnection_Request) returns (Wifi_AddConnection_Reply) {}
+    rpc Wifi_AddSimpleConnection(Wifi_AddSimpleConnection_Request) returns (Wifi_AddSimpleConnection_Reply) {}
     rpc Wifi_GetConnections(Wifi_GetConnections_Request) returns (Wifi_GetConnections_Reply) {}
     rpc Wifi_Connect(Wifi_Connect_Request) returns (Wifi_Connect_Reply) {}
     rpc Wifi_RemoveConnection(Wifi_RemoveConnection_Request) returns (Wifi_RemoveConnection_Reply) {}
@@ -257,35 +239,36 @@ message Wifi_GetAccessPoints_Reply {
     repeated AccessPoint accessPoint = 2;
 }
 
-message Wifi_AddConnection_Request {
-    string id = 1;
+message Wifi_AddSimpleConnection_Request {
+    string connectionId = 1;
     string ssid = 2;
     string psk = 3;
     bool persistent = 4;
 }
 
-message Wifi_AddConnection_Reply {
+message Wifi_AddSimpleConnection_Reply {
 }
 
 message Wifi_GetConnections_Request {
 }
 
 message Wifi_GetConnections_Reply {
-    repeated Connection wifiConnection = 1;
+    repeated string connectionId = 1;
 }
 
 message Wifi_Connect_Request {
-    string id = 1;
+    string connectionId = 1;
 }
 
 message Wifi_Connect_Reply {
 }
 
 message Wifi_RemoveConnection_Request {
-    string id = 1;
+    string connectionId = 1;
 }
 
 message Wifi_RemoveConnection_Reply {
+    bool connectionRemoved = 1;
 }
 
 message Wifi_SetAutoConnect_Request {
@@ -539,9 +522,66 @@ message OneWire_GetRegister_Reply {
     int32 value = 1;
 }
 
+// ======== SkyhawkMezz Protocol ========
+service SkyHawkMezz_Service {
+    rpc SkyHawkMezz_GetAnalogInputs (SkyHawkMezz_GetAnalogInputs_Request)  returns (SkyHawkMezz_GetAnalogInputs_Reply) {}
+    rpc SkyHawkMezz_AnalogDiffCtrl  (SkyHawkMezz_AnalogDiffCtrl_Request)   returns (SkyHawkMezz_AnalogDiffCtrl_Reply) {}
+    rpc SkyHawkMezz_GetFWVersion    (SkyHawkMezz_GetFWVersion_Request)     returns (SkyHawkMezz_GetFWVersion_Reply) {}
+    rpc SkyHawkMezz_GetHWVersion    (SkyHawkMezz_GetHWVersion_Request)     returns (SkyHawkMezz_GetHWVersion_Reply) {}
+    rpc SkyHawkMezz_UpdateFW        (SkyHawkMezz_UpdateFW_Request)         returns (SkyHawkMezz_UpdateFW_Reply) {}
+}
 
-// ======== SkyhawkMisc Protocol ========
-service SkyhawkMisc_Service {
+message SkyHawkMezz_GetAnalogInputs_Request {
+}
+
+message SkyHawkMezz_GetAnalogInputs_Reply {
+    uint32 AnalogInput_1 = 1;
+    uint32 AnalogInput_2 = 2;
+    uint32 AnalogInput_3 = 3;
+    uint32 AnalogInput_4 = 4;
+    uint32 AnalogDiff_1  = 5;
+    uint32 AnalogDiff_2  = 6;
+}
+
+message SkyHawkMezz_AnalogDiffCtrl_Request {
+    // Nullable
+    oneof enableDiff1_oneof {
+        bool enableDiff1 = 1;
+    }
+    
+    // Nullable
+    oneof enableDiff2_oneof {
+        bool enableDiff2 = 2;
+    }
+}
+
+message SkyHawkMezz_AnalogDiffCtrl_Reply {
+}
+
+message SkyHawkMezz_UpdateFW_Request {
+    string filePath = 1;
+}
+
+message SkyHawkMezz_UpdateFW_Reply {
+    bool success = 1;
+}
+
+message SkyHawkMezz_GetFWVersion_Request {
+}
+
+message SkyHawkMezz_GetFWVersion_Reply {
+    string fwVersion = 1;
+}
+
+message SkyHawkMezz_GetHWVersion_Request {
+}
+
+message SkyHawkMezz_GetHWVersion_Reply {
+    int32 hwVersion = 1;
+}
+
+// ======== SkyHawkMisc Protocol ========
+service SkyHawkMisc_Service {
     rpc WiegandEN_OneWireDIS_Set(WiegandEN_OneWireDIS_Set_Request) returns (WiegandEN_OneWireDIS_Set_Reply) {}
     rpc WiegandEN_OneWireDIS_Get(WiegandEN_OneWireDIS_Get_Request) returns (WiegandEN_OneWireDIS_Get_Reply) {}
     rpc WWANAntennaEN_Set(WWANAntennaEN_Set_Request) returns (WWANAntennaEN_Set_Reply) {}
@@ -614,4 +654,51 @@ message DetectMezz_Request {
 
 message DetectMezz_Reply {
     bool value = 1;
+}
+
+// ======== SkyHawkPowerManager Protocol ========
+service SkyHawkPowerManager_Service {
+    rpc SkyHawkPmgr_GetRegister (SkyHawkPmgr_GetRegister_Request) returns (SkyHawkPmgr_GetRegister_Reply) {}
+    rpc SkyHawkPmgr_SetRegister (SkyHawkPmgr_SetRegister_Request) returns (SkyHawkPmgr_SetRegister_Reply) {}
+    rpc SkyHawkPmgr_UpdateFW (SkyHawkPmgr_UpdateFW_Request) returns (SkyHawkPmgr_UpdateFW_Reply) {}
+    rpc SkyHawkPmgr_GetFWVersion (SkyHawkPmgr_GetFWVersion_Request) returns (SkyHawkPmgr_GetFWVersion_Reply) {}
+    rpc SkyHawkPmgr_GetHWVersion (SkyHawkPmgr_GetHWVersion_Request) returns (SkyHawkPmgr_GetHWVersion_Reply) {}
+}
+
+message SkyHawkPmgr_GetRegister_Request {
+    string regName = 1;
+}
+
+message SkyHawkPmgr_GetRegister_Reply {
+    int32 value = 1;
+}
+
+message SkyHawkPmgr_SetRegister_Request {
+    string regName = 1;
+    int32 value = 2;
+}
+
+message SkyHawkPmgr_SetRegister_Reply {
+}
+
+message SkyHawkPmgr_UpdateFW_Request {
+    string filePath = 1;
+}
+
+message SkyHawkPmgr_UpdateFW_Reply {
+    bool success = 1;
+}
+
+message SkyHawkPmgr_GetFWVersion_Request {
+}
+
+message SkyHawkPmgr_GetFWVersion_Reply {
+    string fwVersion = 1;
+}
+
+message SkyHawkPmgr_GetHWVersion_Request {
+}
+
+message SkyHawkPmgr_GetHWVersion_Reply {
+    int32 hwVersion = 1;
 }
