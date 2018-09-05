@@ -1,5 +1,3 @@
-// BLink Protocol v0.08
-
 syntax = "proto3";
 
 option java_multiple_files = true;
@@ -529,6 +527,7 @@ service SkyHawkMezz_Service {
     rpc SkyHawkMezz_GetFWVersion    (SkyHawkMezz_GetFWVersion_Request)     returns (SkyHawkMezz_GetFWVersion_Reply) {}
     rpc SkyHawkMezz_GetHWVersion    (SkyHawkMezz_GetHWVersion_Request)     returns (SkyHawkMezz_GetHWVersion_Reply) {}
     rpc SkyHawkMezz_UpdateFW        (SkyHawkMezz_UpdateFW_Request)         returns (SkyHawkMezz_UpdateFW_Reply) {}
+    rpc SkyHawkMezz_Detect          (SkyHawkMezz_Detect_Request)           returns (SkyHawkMezz_Detect_Reply) {}
 }
 
 message SkyHawkMezz_GetAnalogInputs_Request {
@@ -580,6 +579,13 @@ message SkyHawkMezz_GetHWVersion_Reply {
     int32 hwVersion = 1;
 }
 
+message SkyHawkMezz_Detect_Request {
+}
+
+message SkyHawkMezz_Detect_Reply {
+    bool value = 1;
+}
+
 // ======== SkyHawkMisc Protocol ========
 service SkyHawkMisc_Service {
     rpc WiegandEN_OneWireDIS_Set(WiegandEN_OneWireDIS_Set_Request) returns (WiegandEN_OneWireDIS_Set_Reply) {}
@@ -590,7 +596,6 @@ service SkyHawkMisc_Service {
     rpc PoEEN_Get(PoEEN_Get_Request) returns (PoEEN_Get_Reply) {}
     rpc MezzSerialMode_Set(MezzSerialMode_Set_Request) returns (MezzSerialMode_Set_Reply) {}
     rpc MezzSerialMode_Get(MezzSerialMode_Get_Request) returns (MezzSerialMode_Get_Reply) {}
-    rpc DetectMezz(DetectMezz_Request) returns (DetectMezz_Reply) {}
 }
 
 message WiegandEN_OneWireDIS_Set_Request {
@@ -647,13 +652,6 @@ message MezzSerialMode_Get_Request {
 
 message MezzSerialMode_Get_Reply {
     string value = 1;
-}
-
-message DetectMezz_Request {
-}
-
-message DetectMezz_Reply {
-    bool value = 1;
 }
 
 // ======== SkyHawkPowerManager Protocol ========
