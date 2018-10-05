@@ -1,5 +1,3 @@
-// BLink Protocol v0.08
-
 syntax = "proto3";
 
 option java_multiple_files = true;
@@ -139,82 +137,61 @@ message SerialPort_Config_Request {
 message SerialPort_Config_Reply {    
 }
 
-// ======== Modem Protocol ========
-service Modem_Service {
-    rpc Modem_GetStatus(Modem_GetStatus_Request) returns (Modem_GetStatus_Reply) {}
-    rpc Modem_SetAPN(Modem_SetAPN_Request) returns (Modem_SetAPN_Reply) {}
-    rpc Modem_GetAPN(Modem_GetAPN_Request) returns (Modem_GetAPN_Reply) {}
-    rpc Modem_SetRadioPower(Modem_SetRadioPower_Request) returns (Modem_SetRadioPower_Reply) {}
-    rpc Modem_Connect(Modem_Connect_Request) returns (Modem_Connect_Reply) {}
-    rpc Modem_Disconnect(Modem_Disconnect_Request) returns (Modem_Disconnect_Reply) {}
-
-    // Not implemented yet
-    rpc Modem_GetInfo(Modem_GetInfo_Request) returns (Modem_GetInfo_Reply) {}
-    rpc Modem_GetSignalInfo(Modem_GetSignalInfo_Request) returns (Modem_GetSignalInfo_Reply) {}
-    rpc Modem_SendSMS(Modem_SendSMS_Request) returns (Modem_SendSMS_Reply) {}
-    rpc Modem_Update(Modem_Update_Request) returns (Modem_Update_Reply) {}
+// ======== BitPipe Protocol ========
+service BitPipe_Service {
+    rpc BitPipe_GetStatus(BitPipe_GetStatus_Request) returns (BitPipe_GetStatus_Reply) {}
+    rpc BitPipe_SetAPN(BitPipe_SetAPN_Request) returns (BitPipe_SetAPN_Reply) {}
+    rpc BitPipe_GetAPN(BitPipe_GetAPN_Request) returns (BitPipe_GetAPN_Reply) {}
+    rpc BitPipe_SetRadioPower(BitPipe_SetRadioPower_Request) returns (BitPipe_SetRadioPower_Reply) {}
+    rpc BitPipe_Connect(BitPipe_Connect_Request) returns (BitPipe_Connect_Reply) {}
+    rpc BitPipe_Disconnect(BitPipe_Disconnect_Request) returns (BitPipe_Disconnect_Reply) {}
+    rpc BitPipe_GetInfo(BitPipe_GetInfo_Request) returns (BitPipe_GetInfo_Reply) {}
 }
 
-message Modem_GetStatus_Request {
+message BitPipe_GetStatus_Request {
 }
 
-message Modem_GetStatus_Reply {
+message BitPipe_GetStatus_Reply {
+    string status_json = 1;
 }
 
-message Modem_GetInfo_Request {
+message BitPipe_GetInfo_Request {
 }
 
-message Modem_GetInfo_Reply {
+message BitPipe_GetInfo_Reply {
+    string info_json = 1;
 }
 
-message Modem_SetAPN_Request {
+message BitPipe_SetAPN_Request {
     string apn = 1;
 }
 
-message Modem_SetAPN_Reply {
+message BitPipe_SetAPN_Reply {
 }
 
-message Modem_GetAPN_Request {
+message BitPipe_GetAPN_Request {
 }
 
-message Modem_GetAPN_Reply {
+message BitPipe_GetAPN_Reply {
     string apn = 1;
 }
 
-message Modem_GetSignalInfo_Request {
+message BitPipe_SetRadioPower_Request {
 }
 
-message Modem_GetSignalInfo_Reply {
+message BitPipe_SetRadioPower_Reply {
 }
 
-message Modem_SetRadioPower_Request {
+message BitPipe_Connect_Request {
 }
 
-message Modem_SetRadioPower_Reply {
+message BitPipe_Connect_Reply {
 }
 
-message Modem_SendSMS_Request {
+message BitPipe_Disconnect_Request {
 }
 
-message Modem_SendSMS_Reply {
-}
-
-message Modem_Update_Request {
-}
-
-message Modem_Update_Reply {
-}
-
-message Modem_Connect_Request {
-}
-
-message Modem_Connect_Reply {
-}
-
-message Modem_Disconnect_Request {
-}
-
-message Modem_Disconnect_Reply {
+message BitPipe_Disconnect_Reply {
 }
 
 
@@ -529,6 +506,7 @@ service SkyHawkMezz_Service {
     rpc SkyHawkMezz_GetFWVersion    (SkyHawkMezz_GetFWVersion_Request)     returns (SkyHawkMezz_GetFWVersion_Reply) {}
     rpc SkyHawkMezz_GetHWVersion    (SkyHawkMezz_GetHWVersion_Request)     returns (SkyHawkMezz_GetHWVersion_Reply) {}
     rpc SkyHawkMezz_UpdateFW        (SkyHawkMezz_UpdateFW_Request)         returns (SkyHawkMezz_UpdateFW_Reply) {}
+    rpc SkyHawkMezz_Detect          (SkyHawkMezz_Detect_Request)           returns (SkyHawkMezz_Detect_Reply) {}
 }
 
 message SkyHawkMezz_GetAnalogInputs_Request {
@@ -580,6 +558,13 @@ message SkyHawkMezz_GetHWVersion_Reply {
     int32 hwVersion = 1;
 }
 
+message SkyHawkMezz_Detect_Request {
+}
+
+message SkyHawkMezz_Detect_Reply {
+    bool value = 1;
+}
+
 // ======== SkyHawkMisc Protocol ========
 service SkyHawkMisc_Service {
     rpc WiegandEN_OneWireDIS_Set(WiegandEN_OneWireDIS_Set_Request) returns (WiegandEN_OneWireDIS_Set_Reply) {}
@@ -590,7 +575,6 @@ service SkyHawkMisc_Service {
     rpc PoEEN_Get(PoEEN_Get_Request) returns (PoEEN_Get_Reply) {}
     rpc MezzSerialMode_Set(MezzSerialMode_Set_Request) returns (MezzSerialMode_Set_Reply) {}
     rpc MezzSerialMode_Get(MezzSerialMode_Get_Request) returns (MezzSerialMode_Get_Reply) {}
-    rpc DetectMezz(DetectMezz_Request) returns (DetectMezz_Reply) {}
 }
 
 message WiegandEN_OneWireDIS_Set_Request {
@@ -647,13 +631,6 @@ message MezzSerialMode_Get_Request {
 
 message MezzSerialMode_Get_Reply {
     string value = 1;
-}
-
-message DetectMezz_Request {
-}
-
-message DetectMezz_Reply {
-    bool value = 1;
 }
 
 // ======== SkyHawkPowerManager Protocol ========
