@@ -1,3 +1,3 @@
-This is a public repository containing the lastest version of BLink_demo and documentation.
-
-Content in this repo may not be ready for official release yet, use with caution.
+This repo contains examples and documentation on how to use BLink.
+BLink is a cross-platform & cross-language RPC based framework.
+It allows the user to control and configure the hardware remotely or locally.
