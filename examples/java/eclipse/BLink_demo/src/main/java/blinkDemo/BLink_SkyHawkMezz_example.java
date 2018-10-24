@@ -8,6 +8,8 @@ import com.google.protobuf.ByteString;
 
 import blink_grpc.SerialPort_ServiceGrpc;
 import blink_grpc.SkyHawkMezz_AnalogDiffCtrl_Request;
+import blink_grpc.SkyHawkMezz_Detect_Reply;
+import blink_grpc.SkyHawkMezz_Detect_Request;
 import blink_grpc.SkyHawkMezz_GetAnalogInputs_Reply;
 import blink_grpc.SkyHawkMezz_GetAnalogInputs_Request;
 import blink_grpc.SkyHawkMezz_ServiceGrpc;
@@ -51,6 +53,15 @@ public class BLink_SkyHawkMezz_example {
     	
     	String fwVersion = blink.Mezz.getFWVersion();
     	logger.log(Level.INFO, "skyHawkLPM: fwVersion now is : " + fwVersion);
+    	
+        // Detect Mezz
+    	SkyHawkMezz_Detect_Request detectMezzRequest = SkyHawkMezz_Detect_Request.newBuilder().build();
+    	SkyHawkMezz_Detect_Reply detectMezzResponse = blockingStub.skyHawkMezzDetect(detectMezzRequest);
+    	
+    	if(detectMezzResponse.getValue() == true)
+    	{
+    	    logger.log(Level.INFO, "Mezz was detected!");
+    	}
     	
     	// Activate the differential # 2
     	SkyHawkMezz_AnalogDiffCtrl_Request diffCtrlRequest = SkyHawkMezz_AnalogDiffCtrl_Request.newBuilder().setEnableDiff2(true).build();	
