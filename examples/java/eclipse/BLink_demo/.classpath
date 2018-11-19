@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="target/generated-sources"/>
+	<classpathentry kind="src" path="target/generated-sources/protobuf/java"/>
+	<classpathentry kind="src" path="target/generated-sources/protobuf/grpc-java"/>
 	<classpathentry kind="src" output="target/classes" path="src/main/java">
 		<attributes>
 			<attribute name="optional" value="true"/>
