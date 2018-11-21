@@ -61,11 +61,15 @@ public class BLink_OneWire_example {
 	    	blink.oneWireStub = OneWire_ServiceGrpc.newBlockingStub(blink.channel);
 	    	
 	        // One wire reset to get pulse
-	        OneWire_Reset_Request resetRequest = OneWire_Reset_Request.newBuilder().setDeviceName("MezzOneWire").build();
+	        OneWire_Reset_Request resetRequest = OneWire_Reset_Request.newBuilder().build();
 	        blink.oneWireStub.oneWireReset(resetRequest);
 	        
+	        // Power on
+	        OneWire_PowerOn_Request powerOnRequest = OneWire_PowerOn_Request.newBuilder().build();
+	        OneWire_PowerOn_Reply powerOnReply = blink.oneWireStub.oneWirePowerOn(powerOnRequest);
+	        
 	        // Get status
-	        OneWire_GetStatus_Request statusRequest = OneWire_GetStatus_Request.newBuilder().setDeviceName("MezzOneWire").build();
+	        OneWire_GetStatus_Request statusRequest = OneWire_GetStatus_Request.newBuilder().build();
 	        OneWire_GetStatus_Reply statusReply = blink.oneWireStub.oneWireGetStatus(statusRequest);
 	    	
 	        // Print status
@@ -82,9 +86,35 @@ public class BLink_OneWire_example {
 	        System.out.println("Triplet Second bit : " + statusReply.getTripletSecondBit());
 	        System.out.println("Branch Direction : " + statusReply.getBranchDir());
 	        
+	        //Power off
+	        OneWire_PowerOff_Request powerOffRequest = OneWire_PowerOff_Request.newBuilder().build();
+	        OneWire_PowerOff_Reply powerOffReply = blink.oneWireStub.oneWirePowerOff(powerOffRequest);
+	        
+	     // Get status
+	        statusRequest = OneWire_GetStatus_Request.newBuilder().build();
+	        statusReply = blink.oneWireStub.oneWireGetStatus(statusRequest);
+	    	
+	        // Print status
+	        System.out.println("Power : " + statusReply.getPower());
+	        System.out.println("ODSpeed : " + statusReply.getOverdrive());
+	        System.out.println("Strong PullUp : " + statusReply.getStrongPullUp());
+	        System.out.println("Active PullUp : " + statusReply.getActivePullUp());
+	        System.out.println("Pulse detected : " +statusReply.getPulseDetected());
+	        System.out.println("Logic Level : " +statusReply.getLogicLevel());
+	        System.out.println("1Wire Busy :" + statusReply.getOneWireBusy());
+	        System.out.println("Short Detected : " + statusReply.getShortDetected());
+	        System.out.println("Device Reset : " + statusReply.getDeviceReset());
+	        System.out.println("Single Bit Result : " + statusReply.getSingleBitResult());
+	        System.out.println("Triplet Second bit : " + statusReply.getTripletSecondBit());
+	        System.out.println("Branch Direction : " + statusReply.getBranchDir());
+	        
+	        // Power on
+	        powerOnRequest = OneWire_PowerOn_Request.newBuilder().build();
+	        powerOnReply = blink.oneWireStub.oneWirePowerOn(powerOnRequest);
+	        
 	        // Now the same example using only set and get registers methods.
-	        // One wire reset to get pulse
-	        OneWire_SetRegister_Request setResetRequest = OneWire_SetRegister_Request.newBuilder().setDeviceName("MezzOneWire")
+            // One wire reset to get pulse
+	        OneWire_SetRegister_Request setResetRequest = OneWire_SetRegister_Request.newBuilder()
 	        		.setReg(0xB4)
 	        		.setData(0x00)
 	        		.build();  // data is not used in this request
@@ -93,7 +123,7 @@ public class BLink_OneWire_example {
 	        
 	        // Get status
 	        // First set the read pointer register
-	        OneWire_SetRegister_Request setStatusRequest = OneWire_SetRegister_Request.newBuilder().setDeviceName("MezzOneWire")
+	        OneWire_SetRegister_Request setStatusRequest = OneWire_SetRegister_Request.newBuilder()
 	        		.setReg(0xE1)
 	        		.setData(0xF0)
 	        		.build();
@@ -101,7 +131,7 @@ public class BLink_OneWire_example {
 	        blink.oneWireStub.oneWireSetRegister(setStatusRequest);
 	        
 	        // Now Read pointer
-	        OneWire_GetRegister_Request getStatusRequest = OneWire_GetRegister_Request.newBuilder().setDeviceName("MezzOneWire")
+	        OneWire_GetRegister_Request getStatusRequest = OneWire_GetRegister_Request.newBuilder()
 	        		.setReg(0xE1)
 	        		.build();
 	        OneWire_GetRegister_Reply getStatusReply = blink.oneWireStub.oneWireGetRegister(getStatusRequest);

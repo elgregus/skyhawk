@@ -387,7 +387,6 @@ service OneWire_Service {
 }
 
 message OneWire_Write_Request {
-    string deviceName = 1;
     int32 data = 2;
     string mode = 3;
 }
@@ -396,7 +395,6 @@ message OneWire_Write_Reply {
 }
 
 message OneWire_Triplet_Request {
-    string deviceName = 1;
     bool direction = 2;
 }
 
@@ -416,7 +414,6 @@ message OneWire_Triplet_Reply {
 }
 
 message OneWire_Read_Request {
-    string deviceName = 1;
     int32 numberOfBytes = 2;
 }
 
@@ -425,21 +422,18 @@ message OneWire_Read_Reply {
 }
 
 message OneWire_PowerOff_Request {
-    string deviceName = 1;
 }
 
 message OneWire_PowerOff_Reply {
 }
 
 message OneWire_PowerOn_Request {
-    string deviceName = 1;
 }
 
 message OneWire_PowerOn_Reply {
 }
 
 message OneWire_AdjustPort_Request {
-    string deviceName = 1;
     int32 data =2;
 }
 
@@ -448,7 +442,6 @@ message OneWire_AdjustPort_Reply {
 }
 
 message OneWire_GetStatus_Request {
-    string deviceName = 1;
 }
 
 message OneWire_GetStatus_Reply {
@@ -467,7 +460,6 @@ message OneWire_GetStatus_Reply {
 }
 
 message OneWire_SetOverdriveSpeed_Request {
-    string deviceName = 1;
     bool overdrive = 2;
 }
 
@@ -475,14 +467,12 @@ message OneWire_SetOverdriveSpeed_Reply {
 }
 
 message OneWire_Reset_Request {
-    string deviceName = 1;
 }
 
 message OneWire_Reset_Reply {
 }
 
 message OneWire_SetRegister_Request {
-    string deviceName = 1;
     int32 reg = 2;
     int32 data = 3;
 }
@@ -491,7 +481,6 @@ message OneWire_SetRegister_Reply {
 }
 
 message OneWire_GetRegister_Request {
-    string deviceName = 1;
     int32 reg = 2;
 }
 
