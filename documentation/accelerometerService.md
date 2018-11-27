@@ -91,6 +91,7 @@ Note: StartMonitoring may take some time to start (non-blocking)
 ####void startTrigger():
 The startTrigger method is used to start interrupt generator (accel INT2 -> LPM).<br>
 Use setTrigger method to set axis threshold and other configuration.
+After calling startTrigger, call startMonitoring for trigger to work.
 
 - param  : None
 
