@@ -50,6 +50,8 @@ The reply is in a JSON form with the following mapping:
 #### BitPipe_SetAPN
 
 Set the APN
+- param  : 
+         + String apn : The apn to configure the BitPipe manager with.
 
 #### BitPipe_GetAPN
 
