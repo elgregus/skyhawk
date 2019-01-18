@@ -140,12 +140,11 @@ message SerialPort_Config_Reply {
 // ======== BitPipe Protocol ========
 service BitPipe_Service {
     rpc BitPipe_GetStatus(BitPipe_GetStatus_Request) returns (BitPipe_GetStatus_Reply) {}
+    rpc BitPipe_GetSignalInfo(BitPipe_GetSignalInfo_Request) returns (BitPipe_GetSignalInfo_Reply) {}
     rpc BitPipe_SetAPN(BitPipe_SetAPN_Request) returns (BitPipe_SetAPN_Reply) {}
     rpc BitPipe_GetAPN(BitPipe_GetAPN_Request) returns (BitPipe_GetAPN_Reply) {}
-    rpc BitPipe_SetRadioPower(BitPipe_SetRadioPower_Request) returns (BitPipe_SetRadioPower_Reply) {}
     rpc BitPipe_Connect(BitPipe_Connect_Request) returns (BitPipe_Connect_Reply) {}
     rpc BitPipe_Disconnect(BitPipe_Disconnect_Request) returns (BitPipe_Disconnect_Reply) {}
-    rpc BitPipe_GetInfo(BitPipe_GetInfo_Request) returns (BitPipe_GetInfo_Reply) {}
 }
 
 message BitPipe_GetStatus_Request {
@@ -155,11 +154,11 @@ message BitPipe_GetStatus_Reply {
     string status_json = 1;
 }
 
-message BitPipe_GetInfo_Request {
+message BitPipe_GetSignalInfo_Request {
 }
 
-message BitPipe_GetInfo_Reply {
-    string info_json = 1;
+message BitPipe_GetSignalInfo_Reply {
+    string signalInfo_json = 1;
 }
 
 message BitPipe_SetAPN_Request {
@@ -174,12 +173,6 @@ message BitPipe_GetAPN_Request {
 
 message BitPipe_GetAPN_Reply {
     string apn = 1;
-}
-
-message BitPipe_SetRadioPower_Request {
-}
-
-message BitPipe_SetRadioPower_Reply {
 }
 
 message BitPipe_Connect_Request {
