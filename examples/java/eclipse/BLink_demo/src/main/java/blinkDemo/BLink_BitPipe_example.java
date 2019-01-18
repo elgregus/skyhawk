@@ -35,7 +35,7 @@ public class BLink_BitPipe_example {
         .usePlaintext(true).build());
   }
 
-  /** Construct client for accessing GPIO service using the existing channel. */
+  /** Construct client for accessing the BitPipe service using the existing channel. */
   public BLink_BitPipe_example(ManagedChannel channel) {
     this.channel = channel;
   }
