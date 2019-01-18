@@ -28,3 +28,5 @@ However, you may still adapt them to implement your own [Error Handling](errorHa
  + Provides methods to control the accelerometer.
 - [Wiegand](wiegandService.md)
  + Provides methods to read the wiegand port.
+- [BitPipe](bitpipe.md)
+ + Provides methods to interact with the BitPipe Manager.

@@ -43,8 +43,7 @@
           <archive>
             <manifest>
               <addClasspath>false</addClasspath>
-              <mainClass>
-	blinkDemo.BLink_GPIO_example</mainClass>
+              <mainClass>blinkDemo.BLink_BitPipe_example</mainClass>
               <classpathPrefix>lib/</classpathPrefix>
               <classpathLayoutType>repository</classpathLayoutType>
             </manifest>
