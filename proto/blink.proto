@@ -103,7 +103,6 @@ service SerialPort_Service {
 message SerialPort_Write_Request {
     string deviceName = 1;
     bytes data = 2;
-    string mode = 3;
 }
 
 message SerialPort_Write_Reply {
@@ -111,7 +110,6 @@ message SerialPort_Write_Reply {
 
 message SerialPort_Read_Request {
     string deviceName = 1;
-    string mode = 2;
 }
 
 message SerialPort_Read_Reply {    
