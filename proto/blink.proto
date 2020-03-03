@@ -103,7 +103,6 @@ service SerialPort_Service {
 message SerialPort_Write_Request {
     string deviceName = 1;
     bytes data = 2;
-    string mode = 3;
 }
 
 message SerialPort_Write_Reply {
@@ -111,7 +110,6 @@ message SerialPort_Write_Reply {
 
 message SerialPort_Read_Request {
     string deviceName = 1;
-    string mode = 2;
 }
 
 message SerialPort_Read_Reply {    
@@ -140,12 +138,11 @@ message SerialPort_Config_Reply {
 // ======== BitPipe Protocol ========
 service BitPipe_Service {
     rpc BitPipe_GetStatus(BitPipe_GetStatus_Request) returns (BitPipe_GetStatus_Reply) {}
+    rpc BitPipe_GetSignalInfo(BitPipe_GetSignalInfo_Request) returns (BitPipe_GetSignalInfo_Reply) {}
     rpc BitPipe_SetAPN(BitPipe_SetAPN_Request) returns (BitPipe_SetAPN_Reply) {}
     rpc BitPipe_GetAPN(BitPipe_GetAPN_Request) returns (BitPipe_GetAPN_Reply) {}
-    rpc BitPipe_SetRadioPower(BitPipe_SetRadioPower_Request) returns (BitPipe_SetRadioPower_Reply) {}
     rpc BitPipe_Connect(BitPipe_Connect_Request) returns (BitPipe_Connect_Reply) {}
     rpc BitPipe_Disconnect(BitPipe_Disconnect_Request) returns (BitPipe_Disconnect_Reply) {}
-    rpc BitPipe_GetInfo(BitPipe_GetInfo_Request) returns (BitPipe_GetInfo_Reply) {}
 }
 
 message BitPipe_GetStatus_Request {
@@ -155,11 +152,11 @@ message BitPipe_GetStatus_Reply {
     string status_json = 1;
 }
 
-message BitPipe_GetInfo_Request {
+message BitPipe_GetSignalInfo_Request {
 }
 
-message BitPipe_GetInfo_Reply {
-    string info_json = 1;
+message BitPipe_GetSignalInfo_Reply {
+    string signalInfo_json = 1;
 }
 
 message BitPipe_SetAPN_Request {
@@ -174,12 +171,6 @@ message BitPipe_GetAPN_Request {
 
 message BitPipe_GetAPN_Reply {
     string apn = 1;
-}
-
-message BitPipe_SetRadioPower_Request {
-}
-
-message BitPipe_SetRadioPower_Reply {
 }
 
 message BitPipe_Connect_Request {
@@ -387,7 +378,6 @@ service OneWire_Service {
 }
 
 message OneWire_Write_Request {
-    string deviceName = 1;
     int32 data = 2;
     string mode = 3;
 }
@@ -396,7 +386,6 @@ message OneWire_Write_Reply {
 }
 
 message OneWire_Triplet_Request {
-    string deviceName = 1;
     bool direction = 2;
 }
 
@@ -416,7 +405,6 @@ message OneWire_Triplet_Reply {
 }
 
 message OneWire_Read_Request {
-    string deviceName = 1;
     int32 numberOfBytes = 2;
 }
 
@@ -425,21 +413,18 @@ message OneWire_Read_Reply {
 }
 
 message OneWire_PowerOff_Request {
-    string deviceName = 1;
 }
 
 message OneWire_PowerOff_Reply {
 }
 
 message OneWire_PowerOn_Request {
-    string deviceName = 1;
 }
 
 message OneWire_PowerOn_Reply {
 }
 
 message OneWire_AdjustPort_Request {
-    string deviceName = 1;
     int32 data =2;
 }
 
@@ -448,7 +433,6 @@ message OneWire_AdjustPort_Reply {
 }
 
 message OneWire_GetStatus_Request {
-    string deviceName = 1;
 }
 
 message OneWire_GetStatus_Reply {
@@ -467,7 +451,6 @@ message OneWire_GetStatus_Reply {
 }
 
 message OneWire_SetOverdriveSpeed_Request {
-    string deviceName = 1;
     bool overdrive = 2;
 }
 
@@ -475,14 +458,12 @@ message OneWire_SetOverdriveSpeed_Reply {
 }
 
 message OneWire_Reset_Request {
-    string deviceName = 1;
 }
 
 message OneWire_Reset_Reply {
 }
 
 message OneWire_SetRegister_Request {
-    string deviceName = 1;
     int32 reg = 2;
     int32 data = 3;
 }
@@ -491,7 +472,6 @@ message OneWire_SetRegister_Reply {
 }
 
 message OneWire_GetRegister_Request {
-    string deviceName = 1;
     int32 reg = 2;
 }
 
